@@ -22,7 +22,7 @@ class settlement_controller extends common_controller
             $qrcode=$qrcode['qrcode_id'];
            
            
-            $url = 'http://b.jizhipay.com/merchants.php?m=pay&c=jhzdf&a=jdf';  //调用接口的平台服务地址
+            $url = 'http://b.jizhipay.com/merchants.php?m=Pay&c=jhzdf&a=jdf';  //调用接口的平台服务地址
             $post_string = array(
                 'ewmid'=>$qrcode
                 ,'acct_id'=>$_POST['acct_id']
@@ -44,20 +44,12 @@ class settlement_controller extends common_controller
             echo $lastobj;exit;
             if($lastobj['msg']['code']==2000)
             {
-                if($amount<$dmount){
-                    //修改划账金额
-                    $hzmoney=M('cashier_msettlement')->update(array("money"=>$dmount-$amount),array("mid"=>$mid,"status"=>0,'money'=>$dmount));
-                    //新增划账记录
-                    $addjl=M('cashier_msettlement')->insert(array("mid"=>$mid,"username"=>$record['username'],"addtime"=>time(),"money"=>$amount,"money2"=>$record['money2'],"status"=>1,"txt"=>''),array("id"=>$id));
-                }else
-                {
-                    $result = M('cashier_msettlement')->update(array("status"=>1,"addtime"=>time()),array("mid"=>$mid,"status"=>0,'money'=>$dmount));//修改提现状态
-                }
+               
                  
                 $this->dexit(array('errcode'=>1,'msg'=>'申请提现成功!'));
             }else
             {
-                $this->dexit(array('errcode'=>0,'errmsg'=>$str['respDesc']));
+                $this->dexit(array('errcode'=>0,'errmsg'=>'申请提现失败'));
             }
             curl_close($ch);
         }else 
