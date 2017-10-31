@@ -173,6 +173,7 @@ class jhzdf_controller extends base_controller{
         }
         return FALSE;
     }
+
     public function updateastrict($upmoney){
         if (M('cashier_another_astrict')->update($upmoney,array('mid'=>$upmoney['mid']))) {
             return true;
@@ -233,6 +234,10 @@ class jhzdf_controller extends base_controller{
 
         if($_POST['amount']>$yes_money){//提现金额小于可提现额度
             echo json_encode(array("msg"=>"超过可提现额度","code"=>"4009"));
+            exit();
+        }
+        if($_POST['amount']>50000){//超过单笔最大提现金额
+            echo json_encode(array("msg"=>"超过单笔最大提现金额","code"=>"4014"));
             exit();
         }
         //        当天时间
