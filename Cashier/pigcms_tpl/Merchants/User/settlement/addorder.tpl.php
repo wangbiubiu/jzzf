@@ -15,12 +15,9 @@
     <link href="<?php echo $this->RlStaticResource; ?>plugins/css/dropzone/basic.css" rel="stylesheet">
     <link href="<?php echo $this->RlStaticResource; ?>plugins/css/dropzone/dropzone.css" rel="stylesheet">
     <link href="<?php echo $this->RlStaticResource; ?>plugins/css/datapicker/datepicker3.css" rel="stylesheet">
-     <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all">
-    
+
     <style>
+
         <script src="<?php echo $this->RlStaticResource; ?>plugins/js/datapicker/bootstrap-datepicker.js"></script>
                                                                                                             <script src="http://cashier.b0.upaiyun.com/pigcms_static/plugins/js/chartJs/Chart.min.js"></script>
         <!-- Data picker -->
@@ -30,17 +27,7 @@
                                                                                                                                                                                                                  select.input-sm {
                                                                                                                                                                                                                      height: 35px;
                                                                                                                                                                                                                      line-height: 35px;
-                                                                                                                                                                                                                 }
-
-        .float-e-margins .btn-info {
-            margin-bottom: 0px;
-        }
-
-        .fa-paste {
-            margin-right: 7px;
-            padding: 0px;
-        }
-
+                                                                                                                                                                                           }
         .dz-preview {
             display: none;
         }
@@ -192,7 +179,7 @@
             margin-top: 4px;
         }
 
-
+.radioddd{width:20px;}
     </style>
 <body>
 <div id="wrapper">
@@ -215,90 +202,41 @@
                 </ol>
             </div>
         </div>
-
-        <form class="layui-form" action="">
-  <div class="layui-form-item">
-    <label class="layui-form-label">单行输入框</label>
-    <div class="layui-input-block">
-      <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
-    </div>
-  </div>
-</form>
-        
-                <form id="form1" method="post" enctype="multipart/form-data" action="merchants.php?m=User&c=settlement&a=addbank2">
+        <div class="row wrapper page-heading iconList" >
+            <div class="bankCardInfor">
+                <h2>请填写提现信息<span style="margin-left: 10px;color:#f00;font-size: 14px;"></span></h2>
+                <form id="form1" method="post" enctype="multipart/form-data" action="merchants.php?m=User&c=settlement&a=addorder">
                    
+                 
                     <div>
                         <label id="ckrxm"><i>*</i>持卡人姓名：</label>
-                        <input type="text" name="customerName" value="<?php echo $bank['customerName'];?>">
+                        <input type="text" name="acct_name" value="" placeholder="必填">
                     </div>
                     <div id="ylsjh">
                         <label><i>*</i>银行预留手机号：</label>
-                        <input type="text" name="phoneNo" value="<?php echo $bank['phoneNo'];?>" placeholder="选填">
+                        <input type="text" name="mobile" value="" placeholder="必填" >
                     </div>
 
                     <div id="khyh">
-                        <label><i>*</i>开户银行：</label>
-                        <select name="settBankNo">
-                            <option value="ICBC" <?php if(!empty($bank) && $bank['settBankNo'] == "ICBC"){echo 'selected="selected"';} ?>>工商银行</option>
-                            <option value="ABC" <?php if(!empty($bank) && $bank['settBankNo'] == "ABC"){echo 'selected="selected"';} ?>>农业银行</option>
-                            <option value="BOC" <?php if(!empty($bank) && $bank['settBankNo'] == "BOC"){echo 'selected="selected"';} ?>>中国银行</option>
-                            <option value="CCB" <?php if(!empty($bank) && $bank['settBankNo'] == "CCB"){echo 'selected="selected"';} ?>>建设银行</option>
-                            <option value="CMB" <?php if(!empty($bank) && $bank['settBankNo'] == "CMB"){echo 'selected="selected"';} ?>>招商银行</option>
-                            <option value="BOCM" <?php if(!empty($bank) && $bank['settBankNo'] == "BOCM"){echo 'selected="selected"';} ?>>交通银行</option>
-                            <option value="CMBC" <?php if(!empty($bank) && $bank['settBankNo'] == "CMBC"){echo 'selected="selected"';} ?>>民生银行</option>
-                            <option value="CNCB" <?php if(!empty($bank) && $bank['settBankNo'] == "CNCB"){echo 'selected="selected"';} ?>>中信银行</option>
-                            <option value="CEBB" <?php if(!empty($bank) && $bank['settBankNo'] == "CEBB"){echo 'selected="selected"';} ?>>光大银行</option>
-                            <option value="CIB" <?php if(!empty($bank) && $bank['settBankNo'] == "CIB"){echo 'selected="selected"';} ?>>兴业银行</option>
-                            <option value="BOB" <?php if(!empty($bank) && $bank['settBankNo'] == "BOB"){echo 'selected="selected"';} ?>>北京银行</option>
-                            <option value="GDB" <?php if(!empty($bank) && $bank['settBankNo'] == "GDB"){echo 'selected="selected"';} ?>>广发银行</option>
-                            <option value="HXB" <?php if(!empty($bank) && $bank['settBankNo'] == "HXB"){echo 'selected="selected"';} ?>>华夏银行</option>
-                            <option value="PSBC" <?php if(!empty($bank) && $bank['settBankNo'] == "PSBC"){echo 'selected="selected"';} ?>>邮储银行</option>
-                            <option value="SPDB" <?php if(!empty($bank) && $bank['settBankNo'] == "SPDB"){echo 'selected="selected"';} ?>>浦发银行</option>
-                            <option value="PAB" <?php if(!empty($bank) && $bank['settBankNo'] == "PAB"){echo 'selected="selected"';} ?>>平安银行</option>
-                            <option value="BOS" <?php if(!empty($bank) && $bank['settBankNo'] == "BOS"){echo 'selected="selected"';} ?>>上海银行</option>
-                            <option value="BOHC" <?php if(!empty($bank) && $bank['settBankNo'] == "BOHC"){echo 'selected="selected"';} ?>>渤海银行</option>
-                            <option value="BOJ" <?php if(!empty($bank) && $bank['settBankNo'] == "BOJ"){echo 'selected="selected"';} ?>>江苏银行</option>
-                            <option value="" <?php if(!empty($bank) && $bank['settBankNo'] == ""){echo 'selected="selected"';} ?>>其他银行</option>
-                        </select>
-                    </div>
-                    <div id="qshh">
-                        <label>开户银行：</label>
-                        <select name="settBankNo2">
-                            <option value="102100099996">工商银行</option>
-                            <option value="103100000026">农业银行</option>
-                            <option value="104100000004">中国银行</option>
-                            <option value="105100000017">建设银行</option>
-                            <option value="301290000007">交通银行</option>
-                            <option value="302100011000">中信银行</option>
-                            <option value="303100000006">光大银行</option>
-                            <option value="304100040000">华夏银行</option>
-                            <option value="305100000013">民生银行</option>
-                            <option value="306581000003">广发银行</option>
-                            <option value="307584007998">平安银行</option>
-                            <option value="308584000013">招商银行</option>
-                            <option value="309391000011">兴业银行</option>
-                            <option value="313100000013">北京银行</option>
-                            <option value="325290000012">上海银行</option>
-                            <option value="310290000013">上海浦东发展银行</option>
-                            <option value="403100000004">中国邮政储蓄银行</option>
-                        </select>
-                        <i>暂时只支持以上银行</i>
+                        <label><i>*</i>提现金额：</label>
+                        <input type="text" name="amount" value="" placeholder="必填">
                     </div>
                     <div>
                         <label><i>*</i>银行卡号：</label>
-                        <input type="text" name="acctNo" value="<?php echo $bank['acctNo'];?>">
-
+                        <input type="text" name="acct_id" value="" placeholder="必填">
                     </div>
-                    <div id="khhh">
+                    <div>
+                        <label>是否是对公账户</label>否<input type='radio' class='radioddd' name='bank_settle_no' checked id='one' value='0'>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是<input type='radio' class='radioddd' name='bank_settle_no' id='two'>
+                    </div>
+                    <div id='isornot' style='display:none'>
                         <label>开户行号：</label>
-                        <input type="text" name="accBankNo" value="<?php echo $bank['accBankNo'];?>">
-                        <i>不知道可不填</i>
-
+                        <input type="text"  id='bbq'  value="" placeholder='必填'>
+                        
                     </div>
-                   
                     <p>
                         <!--<input type="submit" name="sub" value="提交" />-->
-                        <button type="submit" class="btn">提交</button>
+                        <button type="submit" class="btn" id='sub'>提交</button>
                     </p>
                 </form>
             </div>
@@ -306,482 +244,107 @@
     </div>
 
 
-   
-</body>
-</html>
+    <?php include RL_PIGCMS_TPL_PATH . APP_NAME . '/' . ROUTE_MODEL . '/public/footer.tpl.php'; ?>
+    <script src="<?php echo $this->RlStaticResource; ?>plugins/js/dropzone/dropzone.js"></script>
+    <!-- iCheck -->
+    <script src="<?php echo $this->RlStaticResource; ?>plugins/js/iCheck/icheck.min.js"></script>
+    <!--start上传图片-->
+    <script>
+
+
+        $(".js_pic_url,.js_pic_url .icon20_common add_gray").dropzone({
+
+            //url: "?m=Agent&c=merchant&a=uploadImg",
+            url: "?m=User&c=settlement&a=uploadImg",
+            addRemoveLinks: false,
+            maxFilesize: 3,
+            acceptedFiles: ".jpg,.png,jpeg",
+            uploadMultiple: false,
+            init: function() {
+                this.on("success", function(file,responseText) {
+                    var imgtype = this.previewsContainer.id;
+                    var rept = $.parseJSON(responseText);
+                    var imgHtml='<div style="width: 100px; height:100px; background-color: #d9dadc;"><img src="'+rept.fileUrl+'" height="100px" width="100px"><input name="'+imgtype+'List[]" class="imginput" type="hidden" value="'+rept.fileUrl+'"><p class="img_upload_edit_area js_edit_area"><a class="icon18_common del_gray js_delete" href="javascript:;" onclick="DelthisImg($(this));" ></a></p></div>';
+
+//				//加
+//				if (imgtype=='annuxes') {
+//					imgHtml =$(this.element).parent().siblings().html() + imgHtml;
+//				}
+
+                    // $(this.element).parents(".sfz1img").siblings().html(imgHtml);
+                    // 身份证正面图片显示
+                    if(imgtype=='constructLeanID'){
+                        $(".sfz1img").html(imgHtml);
+                    }
+                    // 身份证反面图片显示
+                    if(imgtype=='constructLean'){
+                        $(".sfz2img").html(imgHtml);
+                    }
+                    // 手持身份证图片显示
+                    if(imgtype=='contact'){
+                        $(".sfz3img").html(imgHtml);
+                    }
+                    // 银行卡正面图片显示
+                    if(imgtype=='cunstructID'){
+                        $(".sfz4img").html(imgHtml);
+                    }
+                    // 银行卡背面图片显示
+                    if(imgtype=='landUseId'){
+                        $(".sfz5img").html(imgHtml);
+                    }
+                });
+            }
+        });
 
 
 
 
+    </script>
+
+    <!--<script>
 
 
+    $(document).on('mouseover mouseout','.img_upload_preview_box',function(event){
+           if(event.type == "mouseover"){
+             $(this).find('p').show();
+           }else if(event.type == "mouseout"){
+            $(this).find('p').hide();
+            }
+          });
 
+    function DelthisImg(obj){
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>layui</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all">
-  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
-</head>
-<body>
-          
-<blockquote class="layui-elem-quote layui-text">
-  鉴于小伙伴的普遍反馈，先温馨提醒两个常见“问题”：1. <a href="/doc/base/faq.html#form" target="_blank">为什么select/checkbox/radio没显示？</a> 2. <a href="/doc/modules/form.html#render" target="_blank">动态添加的表单元素如何更新？</a>
-</blockquote>
-              
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-  <legend>表单集合演示</legend>
-</fieldset>
- 
-<form class="layui-form" action="">
-  <div class="layui-form-item">
-    <label class="layui-form-label">单行输入框</label>
-    <div class="layui-input-block">
-      <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">验证必填项</label>
-    <div class="layui-input-block">
-      <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">验证手机</label>
-      <div class="layui-input-inline">
-        <input type="tel" name="phone" lay-verify="phone" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-    <div class="layui-inline">
-      <label class="layui-form-label">验证邮箱</label>
-      <div class="layui-input-inline">
-        <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">多规则验证</label>
-      <div class="layui-input-inline">
-        <input type="text" name="number" lay-verify="required|number" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-    <div class="layui-inline">
-      <label class="layui-form-label">验证日期</label>
-      <div class="layui-input-inline">
-        <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-    <div class="layui-inline">
-      <label class="layui-form-label">验证链接</label>
-      <div class="layui-input-inline">
-        <input type="tel" name="url" lay-verify="url" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <label class="layui-form-label">验证身份证</label>
-    <div class="layui-input-block">
-      <input type="text" name="identity" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">自定义验证</label>
-    <div class="layui-input-inline">
-      <input type="password" name="password" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
-    </div>
-    <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
-  </div>
-  
-  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">范围</label>
-      <div class="layui-input-inline" style="width: 100px;">
-        <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
-      </div>
-      <div class="layui-form-mid">-</div>
-      <div class="layui-input-inline" style="width: 100px;">
-        <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <label class="layui-form-label">单行选择框</label>
-    <div class="layui-input-block">
-      <select name="interest" lay-filter="aihao">
-        <option value=""></option>
-        <option value="0">写作</option>
-        <option value="1" selected="">阅读</option>
-        <option value="2">游戏</option>
-        <option value="3">音乐</option>
-        <option value="4">旅行</option>
-      </select>
-    </div>
-  </div>
-  
-  
-  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">分组选择框</label>
-      <div class="layui-input-inline">
-        <select name="quiz">
-          <option value="">请选择问题</option>
-          <optgroup label="城市记忆">
-            <option value="你工作的第一个城市">你工作的第一个城市</option>
-          </optgroup>
-          <optgroup label="学生时代">
-            <option value="你的工号">你的工号</option>
-            <option value="你最喜欢的老师">你最喜欢的老师</option>
-          </optgroup>
-        </select>
-      </div>
-    </div>
-    <div class="layui-inline">
-      <label class="layui-form-label">搜索选择框</label>
-      <div class="layui-input-inline">
-        <select name="modules" lay-verify="required" lay-search="">
-          <option value="">直接选择或搜索选择</option>
-          <option value="1">layer</option>
-          <option value="2">form</option>
-          <option value="3">layim</option>
-          <option value="4">element</option>
-          <option value="5">laytpl</option>
-          <option value="6">upload</option>
-          <option value="7">laydate</option>
-          <option value="8">laypage</option>
-          <option value="9">flow</option>
-          <option value="10">util</option>
-          <option value="11">code</option>
-          <option value="12">tree</option>
-          <option value="13">layedit</option>
-          <option value="14">nav</option>
-          <option value="15">tab</option>
-          <option value="16">table</option>
-          <option value="17">select</option>
-          <option value="18">checkbox</option>
-          <option value="19">switch</option>
-          <option value="20">radio</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <label class="layui-form-label">联动选择框</label>
-    <div class="layui-input-inline">
-      <select name="quiz1">
-        <option value="">请选择省</option>
-        <option value="浙江" selected="">浙江省</option>
-        <option value="你的工号">江西省</option>
-        <option value="你最喜欢的老师">福建省</option>
-      </select>
-    </div>
-    <div class="layui-input-inline">
-      <select name="quiz2">
-        <option value="">请选择市</option>
-        <option value="杭州">杭州</option>
-        <option value="宁波" disabled="">宁波</option>
-        <option value="温州">温州</option>
-        <option value="温州">台州</option>
-        <option value="温州">绍兴</option>
-      </select>
-    </div>
-    <div class="layui-input-inline">
-      <select name="quiz3">
-        <option value="">请选择县/区</option>
-        <option value="西湖区">西湖区</option>
-        <option value="余杭区">余杭区</option>
-        <option value="拱墅区">临安市</option>
-      </select>
-    </div>
-    <div class="layui-form-mid layui-word-aux">此处只是演示联动排版，并未做联动交互</div>
-  </div>
-  
-  <div class="layui-form-item">
-    <label class="layui-form-label">复选框</label>
-    <div class="layui-input-block">
-      <input type="checkbox" name="like[write]" title="写作">
-      <input type="checkbox" name="like[read]" title="阅读" checked="">
-      <input type="checkbox" name="like[game]" title="游戏">
-    </div>
-  </div>
-  
-  <div class="layui-form-item" pane="">
-    <label class="layui-form-label">原始复选框</label>
-    <div class="layui-input-block">
-      <input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
-      <input type="checkbox" name="like1[read]" lay-skin="primary" title="阅读">
-      <input type="checkbox" name="like1[game]" lay-skin="primary" title="游戏" disabled="">
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <label class="layui-form-label">开关-默认关</label>
-    <div class="layui-input-block">
-      <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">开关-默认开</label>
-    <div class="layui-input-block">
-      <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">单选框</label>
-    <div class="layui-input-block">
-      <input type="radio" name="sex" value="男" title="男" checked="">
-      <input type="radio" name="sex" value="女" title="女">
-      <input type="radio" name="sex" value="禁" title="禁用" disabled="">
-    </div>
-  </div>
-  <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">普通文本域</label>
-    <div class="layui-input-block">
-      <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-    </div>
-  </div>
-  <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">编辑器</label>
-    <div class="layui-input-block">
-      <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-    </div>
-  </div>
-</form>
- 
-<!-- 示例-970 -->
-<ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
-  
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-  <legend>方框风格的表单集合</legend>
-</fieldset>
-<form class="layui-form layui-form-pane" action="">
-  <div class="layui-form-item">
-    <label class="layui-form-label">长输入框</label>
-    <div class="layui-input-block">
-      <input type="text" name="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">短输入框</label>
-    <div class="layui-input-inline">
-      <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">日期选择</label>
-      <div class="layui-input-block">
-        <input type="text" name="date" id="date1" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-    <div class="layui-inline">
-      <label class="layui-form-label">行内表单</label>
-      <div class="layui-input-inline">
-        <input type="text" name="number" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">密码</label>
-    <div class="layui-input-inline">
-      <input type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
-    </div>
-    <div class="layui-form-mid layui-word-aux">请务必填写用户名</div>
-  </div>
-  
-  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">范围</label>
-      <div class="layui-input-inline" style="width: 100px;">
-        <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
-      </div>
-      <div class="layui-form-mid">-</div>
-      <div class="layui-input-inline" style="width: 100px;">
-        <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
-      </div>
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <label class="layui-form-label">单行选择框</label>
-    <div class="layui-input-block">
-      <select name="interest" lay-filter="aihao">
-        <option value=""></option>
-        <option value="0">写作</option>
-        <option value="1" selected="">阅读</option>
-        <option value="2">游戏</option>
-        <option value="3">音乐</option>
-        <option value="4">旅行</option>
-      </select>
-    </div>
-  </div>
-  
-  <div class="layui-form-item">
-    <label class="layui-form-label">行内选择框</label>
-    <div class="layui-input-inline">
-      <select name="quiz1">
-        <option value="">请选择省</option>
-        <option value="浙江" selected="">浙江省</option>
-        <option value="你的工号">江西省</option>
-        <option value="你最喜欢的老师">福建省</option>
-      </select>
-    </div>
-    <div class="layui-input-inline">
-      <select name="quiz2">
-        <option value="">请选择市</option>
-        <option value="杭州">杭州</option>
-        <option value="宁波" disabled="">宁波</option>
-        <option value="温州">温州</option>
-        <option value="温州">台州</option>
-        <option value="温州">绍兴</option>
-      </select>
-    </div>
-    <div class="layui-input-inline">
-      <select name="quiz3">
-        <option value="">请选择县/区</option>
-        <option value="西湖区">西湖区</option>
-        <option value="余杭区">余杭区</option>
-        <option value="拱墅区">临安市</option>
-      </select>
-    </div>
-  </div>
-  <div class="layui-form-item" pane="">
-    <label class="layui-form-label">开关-开</label>
-    <div class="layui-input-block">
-      <input type="checkbox" checked="" name="open" lay-skin="switch" lay-filter="switchTest" title="开关">
-    </div>
-  </div>
-  <div class="layui-form-item" pane="">
-    <label class="layui-form-label">单选框</label>
-    <div class="layui-input-block">
-      <input type="radio" name="sex" value="男" title="男" checked="">
-      <input type="radio" name="sex" value="女" title="女">
-      <input type="radio" name="sex" value="禁" title="禁用" disabled="">
-    </div>
-  </div>
-  <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">文本域</label>
-    <div class="layui-input-block">
-      <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <button class="layui-btn" lay-submit="" lay-filter="demo2">跳转式提交</button>
-  </div>
-</form>
-          
-<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-<script>
-layui.use(['form', 'layedit', 'laydate'], function(){
-  var form = layui.form
-  ,layer = layui.layer
-  ,layedit = layui.layedit
-  ,laydate = layui.laydate;
-  
-  //日期
-  laydate.render({
-    elem: '#date'
-  });
-  laydate.render({
-    elem: '#date1'
-  });
-  
-  //创建一个编辑器
-  var editIndex = layedit.build('LAY_demo_editor');
- 
-  //自定义验证规则
-  form.verify({
-    title: function(value){
-      if(value.length < 5){
-        return '标题至少得5个字符啊';
-      }
-    }
-    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-    ,content: function(value){
-      layedit.sync(editIndex);
-    }
-  });
-  
-  //监听指定开关
-  form.on('switch(switchTest)', function(data){
-    layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
-      offset: '6px'
+    swal({
+    title: "您确定删除图片！",
+    text: "",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    closeOnConfirm: true,
+    closeOnCancel: true
+    },function(isConfirm){
+        if (isConfirm){
+            obj.parent('p').parent('.img_upload_preview_box').remove();
+        }
     });
-    layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-  });
-  
-  //监听提交
-  form.on('submit(demo1)', function(data){
-    layer.alert(JSON.stringify(data.field), {
-      title: '最终的提交信息'
-    })
-    return false;
-  });
-  
-  
-});
-</script>
 
+    }
+    </script>-->
+
+
+    <!--end 7.10-->
+    <script>
+    
+$('#two').click(function(){
+	$('#isornot').show();
+})
+$('#one').click(function(){
+	$('#isornot').hide();
+})
+     $('#sub').click(function(){
+	$('#two').val($('#bbq').val());
+         })
+    </script>
 </body>
 </html>

@@ -12,10 +12,58 @@ class settlement_controller extends common_controller
         $this->model = M('cashier_order');
     }
 
-    //金海哲商户申请提现
+ //金海哲商户申请提现
     public function addorder()
     {
-        include $this->showTpl("");
+        if(IS_POST)
+        {
+            $mid = $this->mid;//商家编号
+            $qrcode=M('cashier_qrcode')->get_one(array('mid'=>$mid),'qrcode_id');
+            $qrcode=$qrcode['qrcode_id'];
+            $amount = $huazhangmoney;//申请代付金额
+            $dmount = $record['money'];//代付金额
+            $rmount=$amount<=$dmount?$amount:$dmount;
+            $url = 'http://pay.51jihua.net/merchants.php?m=pay&c=jhzdf&a=jdf';  //调用接口的平台服务地址
+            $post_string = array(
+                'ewmid'=>$qrcode
+                ,'acct_id'=>$_POST['acct_id']
+                ,'acct_name'=>$_POST['acct_name']
+                ,'mobile'=>$_POST['mobile']
+                ,'amount'=>$_POST['amount']
+                ,'bank_settle_no'=>$_POST['bank_settle_no']
+            );
+             
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            $result = curl_exec($ch);
+            $lastobj=json_decode($result,true);
+            if($lastobj['msg']['code']==2000)
+            {
+                if($amount<$dmount){
+                    //修改划账金额
+                    $hzmoney=M('cashier_msettlement')->update(array("money"=>$dmount-$amount),array("mid"=>$mid,"status"=>0,'money'=>$dmount));
+                    //新增划账记录
+                    $addjl=M('cashier_msettlement')->insert(array("mid"=>$mid,"username"=>$record['username'],"addtime"=>time(),"money"=>$amount,"money2"=>$record['money2'],"status"=>1,"txt"=>''),array("id"=>$id));
+                }else
+                {
+                    $result = M('cashier_msettlement')->update(array("status"=>1,"addtime"=>time()),array("mid"=>$mid,"status"=>0,'money'=>$dmount));//修改提现状态
+                }
+                 
+                $this->dexit(array('errcode'=>1,'msg'=>'申请提现成功!'));
+            }else
+            {
+                $this->dexit(array('errcode'=>0,'errmsg'=>$str['respDesc']));
+            }
+            curl_close($ch);
+        }else 
+        {
+            include $this->showTpl("");
+        }
+        
     }
     //商户申请结算
     public function index()
