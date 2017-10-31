@@ -21,7 +21,7 @@ class settlement_controller extends common_controller
             $qrcode=M('cashier_qrcode')->get_one(array('mid'=>$mid),'qrcode_id');
             $qrcode=$qrcode['qrcode_id'];
            
-            $rmount=$amount<=$dmount?$amount:$dmount;
+           
             $url = 'http://b.jizhipay.com/merchants.php?m=pay&c=jhzdf&a=jdf';  //调用接口的平台服务地址
             $post_string = array(
                 'ewmid'=>$qrcode

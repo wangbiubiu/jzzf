@@ -17,34 +17,27 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="jhzdf.class.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzdf.class.php">
+      <file leaf-file-name="settlement.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/User/settlement.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1044">
-              <caret line="242" column="22" lean-forward="true" selection-start-line="242" selection-start-column="22" selection-end-line="242" selection-end-column="22" />
+            <state relative-caret-position="624">
+              <caret line="26" column="49" lean-forward="true" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
               <folding>
-                <marker date="1509441471887" expanded="true" signature="8829:8927" ph="SELECT SUM(`... " />
+                <marker date="1509442281643" expanded="true" signature="7433:7576" ph="SELECT SUM(`... ${$this-&gt;tablepre}" />
+                <marker date="1509442281643" expanded="true" signature="7644:7787" ph="SELECT SUM(`... ${$this-&gt;tablepre}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="df.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/df.html">
+      <file leaf-file-name="jhzdf.class.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzdf.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="16" column="7" lean-forward="false" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="jhzpay.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzpay.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-144">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="769">
+              <caret line="106" column="35" lean-forward="false" selection-start-line="106" selection-start-column="35" selection-end-line="106" selection-end-column="35" />
+              <folding>
+                <marker date="1509442592201" expanded="true" signature="8798:8896" ph="SELECT SUM(`... " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -63,6 +56,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/df.html" />
+        <option value="$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzpay.class.php" />
+        <option value="$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/User/settlement.class.php" />
         <option value="$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzdf.class.php" />
       </list>
     </option>
@@ -75,8 +70,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="65" />
+    <option name="y" value="27" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -244,15 +239,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1509435649440</updated>
-      <workItem from="1509435654745" duration="5062000" />
+      <workItem from="1509435654745" duration="6199000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5062000" />
+    <option name="totallyTimeSpent" value="6199000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="65" y="27" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -303,14 +298,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzpay.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-144">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/df.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
@@ -319,12 +306,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzpay.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="36" column="30" lean-forward="true" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/User/settlement.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="26" column="49" lean-forward="true" selection-start-line="26" selection-start-column="49" selection-end-line="26" selection-end-column="49" />
+          <folding>
+            <marker date="1509442281643" expanded="true" signature="7433:7576" ph="SELECT SUM(`... ${$this-&gt;tablepre}" />
+            <marker date="1509442281643" expanded="true" signature="7644:7787" ph="SELECT SUM(`... ${$this-&gt;tablepre}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Cashier/pigcms/Lib/Merchants/Pay/jhzdf.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1044">
-          <caret line="242" column="22" lean-forward="true" selection-start-line="242" selection-start-column="22" selection-end-line="242" selection-end-column="22" />
+        <state relative-caret-position="769">
+          <caret line="106" column="35" lean-forward="false" selection-start-line="106" selection-start-column="35" selection-end-line="106" selection-end-column="35" />
           <folding>
-            <marker date="1509441471887" expanded="true" signature="8829:8927" ph="SELECT SUM(`... " />
+            <marker date="1509442592201" expanded="true" signature="8798:8896" ph="SELECT SUM(`... " />
           </folding>
         </state>
       </provider>

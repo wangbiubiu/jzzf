@@ -104,7 +104,7 @@ class jhzdf_controller extends base_controller{
         if($res['retCode']==12000){
             $this->response($res,$info,$balance);
         }else{
-            echo json_encode(array("msg"=>"提现失败","code"=>"4012"));
+            echo json_encode($res);
             exit();
         }
 

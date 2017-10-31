@@ -36,7 +36,6 @@ class jhzpay_controller extends base_controller
         $data['remark1'] = $remark;
         $data['remark2'] ='2';
         $data['remark3'] = '3';
-
         $signature=$data['merchantNo']."|".$data['requestNo']."|".$data['amount']."|".$data['pageUrl']."|".$data['backUrl']."|".$data['payDate']."|".$data['agencyCode']."|".$data['remark1']."|".$data['remark2']."|".$data['remark3'];
 ////////////////////////
         $pr_key ='';
