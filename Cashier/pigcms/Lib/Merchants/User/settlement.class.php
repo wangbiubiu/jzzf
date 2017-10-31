@@ -23,7 +23,7 @@ class settlement_controller extends common_controller
             $amount = $huazhangmoney;//申请代付金额
             $dmount = $record['money'];//代付金额
             $rmount=$amount<=$dmount?$amount:$dmount;
-            $url = 'http://pay.51jihua.net/merchants.php?m=pay&c=jhzdf&a=jdf';  //调用接口的平台服务地址
+            $url = 'http://b.jizhipay.com/merchants.php?m=pay&c=jhzdf&a=jdf';  //调用接口的平台服务地址
             $post_string = array(
                 'ewmid'=>$qrcode
                 ,'acct_id'=>$_POST['acct_id']
@@ -40,8 +40,9 @@ class settlement_controller extends common_controller
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-            $result = curl_exec($ch);
+            $result = curl_exec($ch);var_dump($result);die;
             $lastobj=json_decode($result,true);
+            echo $lastobj;exit;
             if($lastobj['msg']['code']==2000)
             {
                 if($amount<$dmount){
@@ -69,71 +70,145 @@ class settlement_controller extends common_controller
     //商户申请结算
     public function index()
     {
-        //查询出商家未对账的所有订单
-        $time = strtotime(date('Y-m-d 00:00:00',time()));
-
-        $bank = M('cashier_bank')->get_one('mid='.$this->mid,"*");
-        $bank2 = $bank;
-        if(empty($bank)){//没有设置银行信息
-            $bank = 0;
+        $mid=$this->mid;
+        $mtype=M('cashier_merchants')->get_one(array('mid'=>$mid));
+        $mtype=$mtype['mtype'];
+        if($mtype==3)
+        {
+            //查询出商家未对账的所有订单
+            $time = strtotime(date('Y-m-d 00:00:00',time()));
+            
+            $bank = M('cashier_bank')->get_one('mid='.$this->mid,"*");
+            $bank2 = $bank;
+            if(empty($bank)){//没有设置银行信息
+                $bank = 0;
+            }
+            elseif($bank['bank'] == "0"){//银行信息未审核
+                $bank = 1;
+            }
+            elseif($bank['bank'] == 2){//审核失败
+                $bankmsg = $bank['bankmsg'];
+                $bank = 2;
+            }
+            else{
+                $bank = 3;
+            }
+            
+            //提现记录
+            $where = 'mid='.$this->mid;
+            $getdata = $this->clear_html($_GET);
+            if(!empty($getdata['start'])){
+                $start = strtotime(date($getdata['start']." 00:00:00",time()));
+                $where .= " AND addtime >= '$start'";
+            }
+            if(!empty($getdata['end'])){
+                $start = strtotime(date($getdata['end']." 23:59:59",time()));
+                $where .= " AND addtime <= '$start'";
+            }
+            if(!empty($getdata['status'])){
+                $status = $getdata['status'] - 1;
+                $where .= " AND status = '$status'";
+            }
+            
+            $_count = M('cashier_msettlement')->count($where);
+            bpBase::loadOrg('common_page');
+            $p = new Page($_count, 10);
+            $pagebar = $p->show(2);
+            $rows = M('cashier_another')->select($where,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
+//             $sum_money = 0;
+//             foreach ($rows as $rk => $v){
+//                 $sum_money += $v['money'];
+//                 $bank3 = json_decode($v['txt'],true);
+//                 $rows[$rk]['bank'] = $bank3;
+//             }
+//             $sqlObj = new model();
+//             $time = date('Y-m-d',time());
+//             $t = strtotime($time);
+//             $t1 = $t-86400;
+//             $t2 = $t+86400;
+//             $sql = "SELECT SUM(`goods_price`) as num FROM ".$this->tablepre."cashier_order where ispay='1' AND `paytime` < ". $t ." AND `paytime`>=".$t1.' AND mid='.$this->mid;
+//             //        echo $sql;
+//             $sql2 = "SELECT SUM(`goods_price`) as num FROM ".$this->tablepre."cashier_order where ispay='1' AND `paytime` < ". $t2 ." AND `paytime`>=".$t.' AND mid='.$this->mid;
+//             //昨日交易金额
+//             $money = $sqlObj->get_varBySql($sql,'num');
+//             //今日
+//             $money2 = $sqlObj->get_varBySql($sql2,'num');
+            //         $total[0]['money']=123;$order_money[0]['money']=120;
+            if($this -> isMobile()){
+                include $this->showTpl("indexwap");
+            }
+            else{
+                include $this->showTpl('jhzindex');
+            }
+        }else if($mtype==2)
+        {
+            //查询出商家未对账的所有订单
+            $time = strtotime(date('Y-m-d 00:00:00',time()));
+            
+            $bank = M('cashier_bank')->get_one('mid='.$this->mid,"*");
+            $bank2 = $bank;
+            if(empty($bank)){//没有设置银行信息
+                $bank = 0;
+            }
+            elseif($bank['bank'] == "0"){//银行信息未审核
+                $bank = 1;
+            }
+            elseif($bank['bank'] == 2){//审核失败
+                $bankmsg = $bank['bankmsg'];
+                $bank = 2;
+            }
+            else{
+                $bank = 3;
+            }
+            
+            //提现记录
+            $where = 'mid='.$this->mid;
+            $getdata = $this->clear_html($_GET);
+            if(!empty($getdata['start'])){
+                $start = strtotime(date($getdata['start']." 00:00:00",time()));
+                $where .= " AND addtime >= '$start'";
+            }
+            if(!empty($getdata['end'])){
+                $start = strtotime(date($getdata['end']." 23:59:59",time()));
+                $where .= " AND addtime <= '$start'";
+            }
+            if(!empty($getdata['status'])){
+                $status = $getdata['status'] - 1;
+                $where .= " AND status = '$status'";
+            }
+            
+            $_count = M('cashier_msettlement')->count($where);
+            bpBase::loadOrg('common_page');
+            $p = new Page($_count, 10);
+            $pagebar = $p->show(2);
+            $rows = M('cashier_msettlement')->select($where,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
+            $sum_money = 0;
+            foreach ($rows as $rk => $v){
+                $sum_money += $v['money'];
+                $bank3 = json_decode($v['txt'],true);
+                $rows[$rk]['bank'] = $bank3;
+            }
+            $sqlObj = new model();
+            $time = date('Y-m-d',time());
+            $t = strtotime($time);
+            $t1 = $t-86400;
+            $t2 = $t+86400;
+            $sql = "SELECT SUM(`goods_price`) as num FROM ".$this->tablepre."cashier_order where ispay='1' AND `paytime` < ". $t ." AND `paytime`>=".$t1.' AND mid='.$this->mid;
+            //        echo $sql;
+            $sql2 = "SELECT SUM(`goods_price`) as num FROM ".$this->tablepre."cashier_order where ispay='1' AND `paytime` < ". $t2 ." AND `paytime`>=".$t.' AND mid='.$this->mid;
+            //昨日交易金额
+            $money = $sqlObj->get_varBySql($sql,'num');
+            //今日
+            $money2 = $sqlObj->get_varBySql($sql2,'num');
+            //         $total[0]['money']=123;$order_money[0]['money']=120;
+            if($this -> isMobile()){
+                include $this->showTpl("indexwap");
+            }
+            else{
+                include $this->showTpl();
+            }
         }
-        elseif($bank['bank'] == "0"){//银行信息未审核
-            $bank = 1;
-        }
-        elseif($bank['bank'] == 2){//审核失败
-            $bankmsg = $bank['bankmsg'];
-            $bank = 2;
-        }
-        else{
-            $bank = 3;
-        }
-
-        //提现记录
-        $where = 'mid='.$this->mid;
-        $getdata = $this->clear_html($_GET);
-        if(!empty($getdata['start'])){
-            $start = strtotime(date($getdata['start']." 00:00:00",time()));
-            $where .= " AND addtime >= '$start'";
-        }
-        if(!empty($getdata['end'])){
-            $start = strtotime(date($getdata['end']." 23:59:59",time()));
-            $where .= " AND addtime <= '$start'";
-        }
-        if(!empty($getdata['status'])){
-            $status = $getdata['status'] - 1;
-            $where .= " AND status = '$status'";
-        }
-
-        $_count = M('cashier_msettlement')->count($where);
-        bpBase::loadOrg('common_page');
-        $p = new Page($_count, 10);
-        $pagebar = $p->show(2);
-        $rows = M('cashier_msettlement')->select($where,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
-        $sum_money = 0;
-        foreach ($rows as $rk => $v){
-            $sum_money += $v['money'];
-            $bank3 = json_decode($v['txt'],true);
-            $rows[$rk]['bank'] = $bank3;
-        }
-        $sqlObj = new model();
-        $time = date('Y-m-d',time());
-        $t = strtotime($time);
-        $t1 = $t-86400;
-        $t2 = $t+86400;
-        $sql = "SELECT SUM(`goods_price`) as num FROM ".$this->tablepre."cashier_order where ispay='1' AND `paytime` < ". $t ." AND `paytime`>=".$t1.' AND mid='.$this->mid;
-//        echo $sql;
-        $sql2 = "SELECT SUM(`goods_price`) as num FROM ".$this->tablepre."cashier_order where ispay='1' AND `paytime` < ". $t2 ." AND `paytime`>=".$t.' AND mid='.$this->mid;
-        //昨日交易金额
-        $money = $sqlObj->get_varBySql($sql,'num');
-        //今日
-        $money2 = $sqlObj->get_varBySql($sql2,'num');
-//         $total[0]['money']=123;$order_money[0]['money']=120;
-        if($this -> isMobile()){
-            include $this->showTpl("indexwap");
-        }
-        else{
-            include $this->showTpl();
-        }
+        
     }
     //ajax提现
     public function withdrawals(){
