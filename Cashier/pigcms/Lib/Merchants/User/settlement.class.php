@@ -20,8 +20,7 @@ class settlement_controller extends common_controller
             $mid = $this->mid;//商家编号
             $qrcode=M('cashier_qrcode')->get_one(array('mid'=>$mid),'qrcode_id');
             $qrcode=$qrcode['qrcode_id'];
-            $amount = $huazhangmoney;//申请代付金额
-            $dmount = $record['money'];//代付金额
+           
             $rmount=$amount<=$dmount?$amount:$dmount;
             $url = 'http://b.jizhipay.com/merchants.php?m=pay&c=jhzdf&a=jdf';  //调用接口的平台服务地址
             $post_string = array(
