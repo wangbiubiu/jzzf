@@ -2,9 +2,23 @@
 bpBase::loadAppClass('base', '', 0);
 
 //金海哲支付接口类
-class jhzpay_controller extends base_controller
+class jpay_controller extends base_controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    public function order(){
+        if(!empty($_POST['order_id'])){
+            $rows = M("cashier_order")->get_one(array('order_id' =>$_POST['order_id']),"ispay");
+            if(!empty($rows) and $rows['ispay'] == "1"){
+                echo "success";
+            }else{
+                echo "error";
+            }
+        }
 
+    }
     /*
      * $amount      金额
      * $paymethod   业务编号
@@ -105,23 +119,22 @@ class jhzpay_controller extends base_controller
     //金海哲支
     public function jpay()
     {
-
         if (empty($_POST['ewmid'])){
-            echo json_encode(array("msg"=>"ewmid为空！","code"=>"4000"));
-//            echo"<script>alert('ewmid为空');history.go(-1);</script>";
+//            echo json_encode(array("msg"=>"ewmid为空！","code"=>"4000"));
+            echo"<script>alert('ewmid为空');history.go(-1);</script>";
             exit();
         }
         if(empty($_POST['goods_price']) or $_POST['goods_price'] < 0.01){
-            echo json_encode(array("msg"=>"交易最小金额为0.01！","code"=>"4001"));
-//            echo"<script>alert('交易最小金额为0.01！');history.go(-1);</script>";
+//            echo json_encode(array("msg"=>"交易最小金额为0.01！","code"=>"4001"));
+            echo"<script>alert('交易最小金额为0.01！');history.go(-1);</script>";
             exit();
         }
         if(empty($_POST['paymethod'])){
-            echo json_encode(array("msg"=>"业务编号为空！","code"=>"4002"));
-//            echo"<script>alert('业务编号为空！');history.go(-1);</script>";
+//            echo json_encode(array("msg"=>"业务编号为空！","code"=>"4002"));
+            echo"<script>alert('业务编号为空！');history.go(-1);</script>";
             exit();
         }
-        $rows = M('cashier_qrcode')->get_one("qrcode_id='" . $_POST['ewmid'] . "'");
+        $rows = M('cashier_qrcode')->get_one(array("qrcode_id"=>$_POST['ewmid']));
         if ($rows['mid'] && $rows['eid'] && $rows['storesid']) {
 
             $rows['goods_price'] = $_POST['goods_price'];
@@ -129,8 +142,8 @@ class jhzpay_controller extends base_controller
 
             $payinfo = $this->payinfo($_POST['paymethod']);
             if($payinfo == false){
-                echo json_encode(array("msg"=>"业务编号错误！","code"=>"4004"));
-//                echo"<script>alert('业务编号错误！');history.go(-1);</script>";
+//                echo json_encode(array("msg"=>"业务编号错误！","code"=>"4004"));
+                echo"<script>alert('业务编号错误！');history.go(-1);</script>";
                 exit();
             }else{
 
@@ -150,8 +163,8 @@ class jhzpay_controller extends base_controller
         $info = json_decode($response,true);
         unset($response);
         if($info['code'] == "2086"){
-            echo json_encode(array("msg"=>"单笔交易金额超限!","code"=>"4007"));
-//            echo"<script>alert('单笔交易金额超限！');history.go(-1);</script>";
+//            echo json_encode(array("msg"=>"单笔交易金额超限!","code"=>"4007"));
+            echo"<script>alert('单笔交易金额超限！');history.go(-1);</script>";
             exit();
         }
         //添加订单
@@ -159,12 +172,12 @@ class jhzpay_controller extends base_controller
         $list['sign'] = $info['sign'];
         $orderinfo = $this->add_order($list);
         if(!empty($orderinfo) && !empty($info['backQrCodeUrl']) && !empty($info['backOrderId'])){
-            echo json_encode(array("msg"=>array("code"=>"2000","msg"=>"success"),"data"=>array("orderid"=>$list['order_id'],"url"=>$info['backQrCodeUrl'],"ewmid"=>$list['qrcode_id'])));
-            //$data = array("order_id"=>$list['order_id'],"goods_price"=>$list['goods_price'],"url"=>$info['backQrCodeUrl']);
-            //include $this->showTpl();
+//            echo json_encode(array("msg"=>array("code"=>"2000","msg"=>"success"),"data"=>array("orderid"=>$list['order_id'],"url"=>$info['backQrCodeUrl'],"ewmid"=>$list['qrcode_id'])));
+            $data = array("order_id"=>$list['order_id'],"goods_price"=>$list['goods_price'],"url"=>$info['backQrCodeUrl'],"paymethod"=>$list['paymethod']);
+            include $this->showTpl();
         }else{
-            echo json_encode(array("msg"=>"","code"=>"4006"));
-//            echo"<script>alert('4006！');history.go(-1);</script>";
+//            echo json_encode(array("msg"=>"","code"=>"4006"));
+            echo"<script>alert('4006！');history.go(-1);</script>";
             exit();
         }
     }
@@ -273,6 +286,38 @@ class jhzpay_controller extends base_controller
     /**
      * 金海哲页面返回URL回调
      */
+
+    public function success()
+    {
+        if(!empty($_POST)){
+            $status['ret'] = json_decode(stripslashes(htmlspecialchars_decode($_POST['ret'])),true);
+            $status['msg'] = json_decode(stripslashes(htmlspecialchars_decode($_POST['msg'])),true);
+            if($status['ret']['code'] == "1000" and $status['ret']['msg'] == "SUCCESS" and !empty($_POST['sign']) and !empty($status['msg'])){
+                $fansDb = M('cashier_order');
+                $ispay['ispay'] = "1";
+                $ispay['paytime'] = time();
+                $rows = $fansDb->get_one(array('transaction_id' =>$status['msg']['payNo']),"mid,goods_price,order_id");
+                $fansDb->update($ispay, array('mid' => $rows['mid'], 'order_id' => $rows['order_id']));
+
+                if($status['msg']['remarks'] != "www.baidu.com"){
+                    $this->request_by_curl($status['msg']['remarks'],array("orderid"=>$rows['order_id'],"money"=>$rows['goods_price'],"orderdate"=>time(),"code"=>"1000"));
+                }
+                return  "SUCCESS";
+            }
+        }
+    }
+
+    private function request_by_curl($uri, $data) {
+        $ch = curl_init ();
+        // print_r($ch);
+        curl_setopt ( $ch, CURLOPT_URL, $uri );
+        curl_setopt ( $ch, CURLOPT_POST, 1 );
+        curl_setopt ( $ch, CURLOPT_HEADER, 0 );
+        curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt ( $ch, CURLOPT_POSTFIELDS, $data );
+        $return = curl_exec ( $ch );
+        curl_close ( $ch );
+    }
 }
 
 ?>
