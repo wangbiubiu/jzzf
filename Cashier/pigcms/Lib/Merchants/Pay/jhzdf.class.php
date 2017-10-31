@@ -7,7 +7,7 @@ bpBase::loadAppClass('base', '', 0);
  * Time: 11:00
  */
 class jhzdf_controller extends base_controller{
-    private function jzzdf($acct_id,$acct_name,$mobile,$amount,$order_id,$rows,$bank_settle_no,$balance){
+    private function jzzdf($acct_id,$acct_name,$mobile,$amount,$order_id,$rows,$bank_settle_no,$balance,$bankname){
 
         error_reporting(E_ALL^E_NOTICE^E_WARNING);
         header("Content-Type: text/html; charset=utf8");
@@ -33,6 +33,7 @@ class jhzdf_controller extends base_controller{
         $data['product_type'] = '11001';//11002额度代付   11001余额代付
         $data['request_no'] = $order_id ?: '22' . date('YmdHis') . mt_rand(11111111, 99999999) . substr(time(), 2); //流水
         $data['version'] = '1.0';
+        $data['bankname']=$bankname;
         if($bank_settle_no!=0){
             $data['bank_settle_no']=$bank_settle_no;
         }//联行号
@@ -95,6 +96,7 @@ class jhzdf_controller extends base_controller{
             "memo"=>"商家提现",
             "bank_settle_no"=>$bank_settle_no,
             "addtime"=>date("Ymd",time()),
+            "bank_name"=>$bankname,
         );
 
 
@@ -149,7 +151,7 @@ class jhzdf_controller extends base_controller{
         //        $info['product_type']=$product_type;
         $this->addanother($info);
 
-        if($info['status'] ==2){
+        if($info['status'] == 2){
             $upmoney['balance']=$balance-($info['money']+3);
             $upmoney['mid']=$info['mid'];
             $otherinfo =$this->updateastrict($upmoney);
@@ -261,6 +263,10 @@ class jhzdf_controller extends base_controller{
             echo json_encode(array("msg"=>"银行卡号为空！","code"=>"4001"),TRUE);
             exit();
         }
+        if (empty($_POST['bank_name'])){
+            echo json_encode(array("msg"=>"开户行为空！","code"=>"4013"),TRUE);
+            exit();
+        }
         //2姓名
         if (empty($_POST['acct_name'])){
             echo json_encode(array("msg"=>"姓名为空！","code"=>"4002"));
@@ -289,7 +295,7 @@ class jhzdf_controller extends base_controller{
 
 
             $info['balance']=$balance;
-            $this->jzzdf($_POST['acct_id'],$_POST['acct_name'],$_POST['mobile'],$info['amount'],$orderid,$rows,$_POST['bank_settle_no'],$balance);
+            $this->jzzdf($_POST['acct_id'],$_POST['acct_name'],$_POST['mobile'],$info['amount'],$orderid,$rows,$_POST['bank_settle_no'],$balance,$_POST['bank_name']);
         } else {
             echo json_encode(array("msg"=>"ewmid不存在！","code"=>"4005"));
             exit();
