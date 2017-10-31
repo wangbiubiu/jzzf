@@ -30,6 +30,7 @@ class settlement_controller extends common_controller
                 ,'acct_name'=>$_POST['acct_name']
                 ,'mobile'=>$_POST['mobile']
                 ,'amount'=>$_POST['amount']
+                ,'bank_name'=>$_POST['bank_name']
                 ,'bank_settle_no'=>$_POST['bank_settle_no']
             );
              

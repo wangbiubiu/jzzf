@@ -222,6 +222,10 @@
                         <input type="text" name="amount" value="" placeholder="必填">
                     </div>
                     <div>
+                        <label><i>*</i>开户银行：</label>
+                        <input type="text" name="bank_name" value="" placeholder="必填">
+                    </div>
+                    <div>
                         <label><i>*</i>银行卡号：</label>
                         <input type="text" name="acct_id" value="" placeholder="必填">
                     </div>
