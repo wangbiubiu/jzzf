@@ -1,0 +1,1 @@
+<?php bpBase::loadSysClass('model', '', 0);class cashiser_salesmans_model extends model {public function __construct() {$this->table_name = 'cashiser_salesmans';parent::__construct();}} ?>

@@ -1,0 +1,1 @@
+<?php bpBase::loadSysClass('model', '', 0);class pigcms_cashier_salesman_model extends model {public function __construct() {$this->table_name = 'pigcms_cashier_salesman';parent::__construct();}} ?>

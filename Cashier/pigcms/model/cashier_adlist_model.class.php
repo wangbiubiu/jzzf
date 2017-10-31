@@ -1,0 +1,1 @@
+<?php bpBase::loadSysClass('model', '', 0);class cashier_adlist_model extends model {public function __construct() {$this->table_name = 'cashier_adlist';parent::__construct();}} ?>
