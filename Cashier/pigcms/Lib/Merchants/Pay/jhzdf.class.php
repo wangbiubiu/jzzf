@@ -33,7 +33,7 @@ class jhzdf_controller extends base_controller{
         $data['product_type'] = '11001';//11002额度代付   11001余额代付
         $data['request_no'] = $order_id ?: '22' . date('YmdHis') . mt_rand(11111111, 99999999) . substr(time(), 2); //流水
         $data['version'] = '1.0';
-        $data['bankname']=$bankname;
+        $data['bank_name']=$bankname;
         if($bank_settle_no!=0){
             $data['bank_settle_no']=$bank_settle_no;
         }//联行号
