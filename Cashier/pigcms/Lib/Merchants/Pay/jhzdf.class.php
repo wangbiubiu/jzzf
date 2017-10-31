@@ -82,7 +82,7 @@ class jhzdf_controller extends base_controller{
         //                         "12000",
         //                     "retMsg"=>
         //                         "请求代付成功");
-        
+
 
         //        插入表格数据
         $info = array(
