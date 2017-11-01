@@ -164,8 +164,8 @@
                                             <select name="type" style=" width: 120px; height: 30px; margin-bottom: 0px">
                                                 <option value="">全部</option>
                                                 <option value="weixin" <?php if ($getdata['type']=='weixin'){ echo 'selected="selected"';} ?>>微信</option>
-                                                <option value="alipay" <?php if ($getdata['type']=='alipay'){ echo 'selected="selected"';} ?>>支付宝</option>
-                                                <option value="qq" <?php if ($getdata['type']=='qq'){ echo 'selected="selected"';} ?>>qq</option>
+                                                <?php if($mtype!=3){?><option value="alipay" <?php if ($getdata['type']=='alipay'){ echo 'selected="selected"';} ?>>支付宝</option><?php }?>
+                                                <?php if($mtype==3){?><option value="qq" <?php if ($getdata['type']=='qq'){ echo 'selected="selected"';} ?>>qq</option><?php }?>
                                             </select>
                                             <label class="font-noraml">选择日期</label>&nbsp;&nbsp;&nbsp;
                                             <input type="text" value="<?php if(isset($getdata['start'])) {echo $getdata['start'];}else{echo date('Y-m-d');}?>" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width: 20%;">
@@ -219,16 +219,20 @@
                                             <td><?php echo $weixin;?></td>
                                             <td><?php echo $weixin_income;?></td>
                                         </tr>
+                                        <?php if($mtype!=3){?>
                                         <tr>
                                             <td>支付宝</td>
                                             <td><?php echo $alipay;?></td>
                                             <td><?php echo $alipay_income;?></td>
                                         </tr>
+                                        <?php }?>
+                                        <?php if($mtype==3){?>
                                          <tr>
                                             <td>qq</td>
                                             <td><?php echo $qq;?></td>
                                             <td><?php echo $qq_income;?></td>
                                         </tr>
+                                        <?php }?>
                                     <?php  }?>
                                     </tbody>
                                 </table>
@@ -245,8 +249,8 @@
                                     </div>
                                     <ul class="doughnut-legend">
                                         <li><span style="background-color:#33EA90"></span>微信支付</li>
-                                        <li><span style="background-color:#00a3d2"></span>支付宝</li>
-                                         <li><span style="background-color:#00ff33"></span>qq</li>
+                                       <?php if($mtype!=3){ echo '<li><span style="background-color:#00a3d2"></span>支付宝</li>';}?> 
+                                        <?php if($mtype==3){echo ' <li><span style="background-color:#00ff33"></span>qq</li>';}?>
                                     </ul>
                                 </div>
                             </div>
@@ -279,7 +283,7 @@
                                                 <td><?php if($v['refund'] == 2){ echo $v['goods_price']-$v['income'];}?></td>
                                                 <td><?php echo $v['income']?></td>
                                                 <td><?php echo date('Y-m-d H:i:s',$v['paytime'])?></td>
-                                                <td><?php if($v['pay_way']=='weixin'){ echo '微信支付';}elseif($v['pay_way']=='alipay'){echo '支付宝';}?></td>
+                                                <td><?php if($v['pay_way']=='weixin'){ echo '微信支付';}elseif($v['pay_way']=='alipay'){echo '支付宝';}elseif($v['pay_way']=='qq'){echo 'qq';}?></td>
                                                 <td><?php echo $v['goods_describe']; ?></td>
                                                 <td><?php echo $v['business_name']." ".$v['branch_name'] ?></td>
                                                 <td><?php echo empty($v['extrainfo'])?'':$v['extrainfo']?></td>

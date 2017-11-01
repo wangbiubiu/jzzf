@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.18, created on 2017-11-01 10:59:46
+<?php /* Smarty version 2.6.18, created on 2017-11-01 15:04:26
          compiled from F:%5Cgit%5Cjzzf%5CCashier%5C./pigcms_tpl/Merchants/System/settlement/cashapply.tpl.php */ ?>
 <!DOCTYPE html>
 <html>
@@ -158,8 +158,8 @@ unset($_smarty_tpl_vars);
                     <div class="row">
                         <div class="tit">
                             <ul class="clearfix " style="margin-bottom: 0px; padding-left: 16px;">
-                               <li <?php if ($this->_tpl_vars['type'] == 1): ?> class="cont" <?php endif; ?>> <a href="/merchants.php?m=System&c=settlement&a=cashapply">待处理</a></li>
-                                <li <?php if ($this->_tpl_vars['type'] == 2): ?> class="cont" <?php endif; ?>><a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success">已处理</a></li>
+                               <!--<li <?php if ($this->_tpl_vars['type'] == 1): ?> class="cont" <?php endif; ?>> <a href="/merchants.php?m=System&c=settlement&a=cashapply">待</a></li>-->
+                                <li <?php if ($this->_tpl_vars['type'] == 2): ?> class="cont" <?php endif; ?>><a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success">已成功</a></li>
 
 
                             </ul>

@@ -138,8 +138,8 @@
                     <div class="row">
                         <div class="tit">
                             <ul class="clearfix " style="margin-bottom: 0px; padding-left: 16px;">
-                               <li {pg:if $type==1} class="cont" {pg:/if}> <a href="/merchants.php?m=System&c=settlement&a=cashapply">待处理</a></li>
-                                <li {pg:if $type==2} class="cont" {pg:/if}><a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success">已处理</a></li>
+                               <!--<li {pg:if $type==1} class="cont" {pg:/if}> <a href="/merchants.php?m=System&c=settlement&a=cashapply">待</a></li>-->
+                                <li {pg:if $type==2} class="cont" {pg:/if}><a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success">已成功</a></li>
 
 
                             </ul>

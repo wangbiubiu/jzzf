@@ -103,16 +103,23 @@ class settlement_controller extends common_controller
             bpBase::loadOrg('common_page');
             $p = new Page($_count, 10);
             $pagebar = $p->show(2);
-            $where2='mid='.$this->mid.' and addtime >'.strtotime(date('y-m-d ',time()).'00:00:00').' and addtime <'.strtotime(date('y-m-d ',time()).'23:59:59');
+//             $where2='mid='.$this->mid.' and addtime >'.strtotime(date('y-m-d ',time()).'00:00:00').' and addtime <'.strtotime(date('y-m-d ',time()).'23:59:59');
             $rows = M('cashier_another')->select($where,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
-            $rowss= M('cashier_another')->select($where2,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
+//             $rowss= M('cashier_another')->select($where2,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
             $lists=M('cashier_another_astrict')->get_one('mid='.$this->mid);
             $sum_money = 0;
-            foreach ($rowss as $rk => $v){
-                $sum_money += $v['money'];
-//                 $bank3 = json_decode($v['txt'],true);
-//                 $rows[$rk]['bank'] = $bank3;
-            }
+//             foreach ($rowss as $rk => $v){
+//                 $sum_money += $v['money'];
+// //                 $bank3 = json_decode($v['txt'],true);
+// //                 $rows[$rk]['bank'] = $bank3;
+//             }
+            //        当天时间
+            $time=date("Ymd",time());
+            $sqlObj = new model();
+            $sql = "SELECT SUM(`money`) as count FROM " ."cqcjcm_cashier_another where mid=".$this->mid." and addtime=$time";
+            //        当天提现金额记录
+            $when_money = $sqlObj->get_varBySql($sql, 'count');
+            $sum_money=$when_money;
 //             $sqlObj = new model();
 //             $time = date('Y-m-d',time());
 //             $t = strtotime($time);

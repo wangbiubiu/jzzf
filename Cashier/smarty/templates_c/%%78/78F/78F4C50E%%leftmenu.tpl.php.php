@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.18, created on 2017-10-31 16:21:26
+<?php /* Smarty version 2.6.18, created on 2017-11-01 15:06:14
          compiled from F:%5Cgit%5Cjzzf%5CCashier%5C./pigcms_tpl/Merchants/System/public/leftmenu.tpl.php */ ?>
 <nav role="navigation" class="navbar-default navbar-static-side">
     <div class="sidebar-collapse">
@@ -67,7 +67,7 @@
             </li>-->
             <li <?php if (ROUTE_CONTROL == 'qrcode'): ?> class="active" <?php endif; ?>>
                 <!--<a href="/merchants.php?m=System&c=qrcode&a=index"><i class="fa fa-home"></i> <span class="nav-label">下载二维码</span><span class="label label-info pull-right">NEW</span></a>-->
-                <a href="/merchants.php?m=System&c=settlement&a=cashapply"><i class="fa fa-home"></i> <span class="nav-label">金海哲提现记录</span>
+                <a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success"><i class="fa fa-home"></i> <span class="nav-label">金海哲提现记录</span>
             </li>
             
             

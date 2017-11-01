@@ -35,7 +35,7 @@ class auto_controller extends base_controller
             FROM `cqcjcm_cashier_order` as o
             LEFT JOIN `cqcjcm_cashier_merchants` as m ON o.mid=m.mid
             LEFT JOIN `cqcjcm_cashier_bank` as b ON b.mid=m.mid
-            WHERE m.mtype!=1 AND o.state = 1 AND m.sub_merchant = 1 AND o.paytime <= '$time2' AND o.refund <> 2 AND b.bank = 1
+            WHERE m.mtype=2 AND o.state = 1 AND m.sub_merchant = 1 AND o.paytime <= '$time2' AND o.refund <> 2 AND b.bank = 1
             GROUP BY o.mid
             ORDER BY o.paytime DESC";
             
