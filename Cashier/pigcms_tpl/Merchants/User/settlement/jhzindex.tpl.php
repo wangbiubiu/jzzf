@@ -170,9 +170,10 @@
                                 <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" data-filter="#filter" style="border: 1px solid #f2f2f2;">
                                     <thead>
                                     <tr style="background: #f2f2f2">
-                                        <th style="text-align: center;"  data-hide="phone">日期</th>
-                                        <th  style="text-align: center;">应结结算金额（实时）</th>
-                                        <th style="text-align: center;" data-hide="phone">可提现金额</th>
+                                        <th  style="text-align: center;">当前资金池</th>
+                                        <th style="text-align: center;" data-hide="phone">当前日额</th>
+                                        <th style="text-align: center;"  data-hide="phone">已用日额</th>
+                                        <th style="text-align: center;"  data-hide="phone">可用日额</th>
                                         <th style="text-align: center;" data-hide="phone">操作</th>
                                     </tr>
                                     </thead>
@@ -180,15 +181,15 @@
 
                                     <tr class="widget-list-item bd_nr" style="text-align: center;">
 
-                                        <td><?php echo date('Y-m-d H:i:s',time()); ?></td>
-                                        <td><?php if(!empty($total[0]['money'])){echo $total[0]['money'];}else{echo 0;} ?></td>
-
+                                        <td><?php echo $lists['upastrict']; ?></td>
+                                        <td><?php echo $lists['dayastrict'] ?></td>
+                                        <td><?php echo $sum_money;?></td>
                                         <td>
-                                            <?php if (!empty($order_money[0]['money'])) {echo $order_money[0]['money'];}else{echo 0;} ?>
+                                            <?php  echo $lists['dayastrict']-$sum_money;?>
                                         </td>
                                         <td>
                                             <p>
-                                                <button class="btn btn-sm btn-info" style="background: #008fd3;" >申请提现</button>
+                                                <button class="btn btn-sm btn-info jump" style="background: #008fd3;color:white;" >申请提现</button>
 
                                             </p>
                                         </td>
@@ -242,7 +243,7 @@
                                    
                                     <?php if(!empty($rows)){ foreach ($rows as $ssk => $ssv): ?>
                                         <tr class="widget-list-item bd_nr" style="text-align: center;">
-                                            <td><?php {echo date('Y-m-d H:i:s',$ssv['addtime']);} ?></td>
+                                            <td><?php {echo date('Y-m-d H:i:s',$ssv['paytime']);} ?></td>
                                             <td>
                                              <?php echo $ssv['bank_name']?>
                                             </td>
@@ -255,7 +256,7 @@
                                     <?php } ?>
                                     </tbody>
                                 </table>
-                                <p style="text-align: right; padding-right: 150px; height: 50px; background: #f2f2f2; line-height: 50px;">合计金额：<?php if (!empty($sum_money)){ echo  $sum_money;}else{echo 0;} ?> 元</p>
+                                <!--<p style="text-align: right; padding-right: 150px; height: 50px; background: #f2f2f2; line-height: 50px;">合计金额：<?php if (!empty($sum_money)){ echo  $sum_money;}else{echo 0;} ?> 元</p>-->
                             </div>
                         </div>
                         <?php echo $pagebar;?>
@@ -286,15 +287,7 @@
 </div>
 </div>
 <script>
-    $(".tit>ul>li").click(function(){
-        var index=$(this).index();
-        var web = $(this).text();
-        $(".active>strong").html(web)
-        $(this).addClass("cont")
-        $(this).siblings().removeClass("cont");
-        $(".ibox>div").eq(index).show();
-        $(".ibox>div").eq(index).siblings().hide();
-    });
+   
 </script>
 
 
@@ -310,168 +303,14 @@
 <script src="<?php echo $this->RlStaticResource;?>plugins/js/validate/jquery.validate.min.js"></script>
 
 <script>
-    <?php if($bank == 0 || $bank == 1 || $bank == 2){ ?>
-    swal({
-        title: "<?php if($bank == 0){ echo '您还没有开通自动结算功能，请先设置银行卡信息!'; }elseif($bank == 1){echo '您的银行卡信息正在审核中，预计需要1-3个工作日，请耐心等待!';}else{echo '您的银行卡信息被驳回，请及时修改!'.$bankmsg.'，请修改!';} ?>",
-        text: '',
-        type: "error",
-        closeOnConfirm: false
-    }, function () {
-        location.href="/merchants.php?m=User&c=settlement&a=bank";
-    });
-    <?php } ?>
-    // 提现
-    flag = true;
-    $('.btn').click(function(){
-
-        var money = <?php if($order_money[0]['money']){ echo $order_money[0]['money'];}else{echo 0;}?>;
-        if(money==0){
-            swal("提现金额不能为0", '', 'error');
-            return false;
-        }
-        //可提现金额的,今天之前00:00的时间
-        var time = <?php echo $time;?>;
-        if(flag){
-            flag = false;
-            $.post('?m=User&c=settlement&a=withdrawals',{money:money,time:time},function(e){
-                if(e.code==1){
-                    swal({
-                        title: "申请提现成功!",
-                        text: '',
-                        type: "success",
-                        closeOnConfirm: false
-                    }, function () {
-                        location.reload();
-                    });
-                }else{
-                    swal({
-                        title: e.msg,
-                        text: '',
-                        type: "error",
-                        closeOnConfirm: false
-                    }, function () {
-                        location.reload();
-                    });
-
-                }
-
-            },'json');
-        }
-    });
-
-
-
-
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#datepicker .input-sm').datepicker({
-            keyboardNavigation: false,
-            forceParse: false,
-            format: "yyyy-mm-dd",
-            autoclose: true
-        });
-        $('#ymdatepicker .input-sm').datepicker({
-            keyboardNavigation: false,
-            forceParse: false,
-            format: "yyyy-mm",
-            autoclose: true
-        });
-
-
-    });
+   $('.jump').click(function(){
+	window.location.href='merchants.php?m=User&c=settlement&a=addorder';
+	   })
 </script>
 
 
 <script>
-    /******导出处理********/
-    var tipshtm = '';
-    var excellock = false;
-    function exportExcel() {
-        if (excellock) {
-            $('#Export_excel_pop').show();
-            $('body').append('<div class="modal-backdrop in"></div>');
-            return false;
-        }
-        excellock = true;
-        $('#Export_excel_pop ul').html('<li style="padding-top:20px;">正在导出您的数据，请稍等......</li>');
-        $('#Export_excel_pop').show();
-        $('body').append('<div class="modal-backdrop in"></div>');
-        var fromData = $('form').serialize();
-        $.post('/merchants.php?m=User&c=statistics&a=exportExcel', fromData, function (resp) {
-            if (resp.error) {
-                alert(resp.msg);
-                return false;
-            } else {
-                if (resp.tt > 0) {
-                    tipshtm = "<li>已经导出1到5000数据......." +
-                        "<li id='extpage_1'>正在为您导出5001到10000条数据......</li>";
-                    $('#Export_excel_pop ul').append(tipshtm);
-                    Run_Export_excel(2);
-                } else {
-                    tipshtm = "<li>数据导出完成&nbsp;&nbsp;&nbsp;<a href='" + resp.fileurl + "'>下载<a></li>"
-                    $('#Export_excel_pop ul').append(tipshtm);
-                    excellock = false;
-                }
-            }
-        }, 'json');
-
-        return false;
-    }
-
-
-
-    function Run_Export_excel(page) {
-        var fromData = $('form').serialize();
-        fromData = fromData + '&page=' + page;
-        $.post('/merchants.php?m=User&c=statistics&a=exportExcel', fromData, function (resp) {
-            if (resp.error) {
-                alert(resp.msg);
-                return false;
-            } else {
-                var tmp = resp.p + 1;
-                var idxs = (page - 1);
-                if (!resp.flag && (tmp <= resp.tt)) {
-                    var mc1 = 5000 * idxs + 1;
-                    var mc2 = 5000 * page;
-                    var mc3 = 5000 * tmp;
-                    $('#extpage_' + idxs).html('已经导出' + mc1 + '到' + mc2 + '数据.......');
-                    mc2 = mc2 + 1;
-                    tipshtm = "<li id='extpage_" + page + "'>正在为您导出" + mc2 + "到" + mc3 + "条数据......</li>";
-                    $('#Export_excel_pop ul').append(tipshtm);
-                    Run_Export_excel(tmp);
-                } else {
-                    tipshtm = "<li id='extpage_end'>完成导出,正在为你打包导出的文件......</li>";
-                    $('#Export_excel_pop ul').append(tipshtm);
-                    if (true) {
-                        $.post('/merchants.php?m=User&c=statistics&a=export_excel_zip', {page: resp.p}, function (rest) {
-                            if (rest.error) {
-                                alert(resp.msg);
-                                return false;
-                            } else {
-                                tipshtm = "<li>打包完成。&nbsp;&nbsp;&nbsp;<a href='" + rest.fileurl + "'>下 载<a></li>";
-                                $('#Export_excel_pop ul').append(tipshtm);
-                                excellock = false;
-                            }
-                        }, 'json');
-                    }
-                }
-                //window.location.reload();
-            }
-        }, 'json');
-
-    }
-    $(function () {
-        $("#excel").click(function () {
-//
-            var stats= $('#datestart').val();
-            var end=$('#dateend').val();
-            window.location.href='?m=User&c=settlement&a=data2Excel&stats="'+stats+'"&end="'+end+'"';
-
-        })
-
-    })
+  
 </script>
 </body>
 </html>

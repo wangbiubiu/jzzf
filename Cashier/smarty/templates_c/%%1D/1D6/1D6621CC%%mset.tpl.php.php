@@ -1,3 +1,5 @@
+<?php /* Smarty version 2.6.18, created on 2017-10-31 17:54:18
+         compiled from F:%5Cgit%5Cjzzf%5CCashier%5C./pigcms_tpl/Merchants/System/settlement/mset.tpl.php */ ?>
 <!DOCTYPE html>
 <html>
 
@@ -7,17 +9,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>结算管理 | 商家结算</title>
-        {pg:include file="$tplHome/System/public/header.tpl.php"}
+        <?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => ($this->_tpl_vars['tplHome'])."/System/public/header.tpl.php", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 
 
         <!-- FooTable -->
-        <link href="{pg:$smarty.const.RL_PIGCMS_STATIC_PATH}plugins/css/footable/footable.core.css" rel="stylesheet">
-        <link href="{pg:$smarty.const.RlStaticResource}plugins/css/iCheck/custom.css" rel="stylesheet">
-        <link href="{pg:$smarty.const.PIGCMS_TPL_STATIC_PATH}css/cashier.css" rel="stylesheet">
-        <link href="{pg:$smarty.const.RlStaticResource}plugins/css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-        <link href="{pg:$smarty.const.RlStaticResource}plugins/css/datapicker/datepicker3.css" rel="stylesheet">
+        <link href="<?php echo @RL_PIGCMS_STATIC_PATH; ?>
+plugins/css/footable/footable.core.css" rel="stylesheet">
+        <link href="<?php echo @RlStaticResource; ?>
+plugins/css/iCheck/custom.css" rel="stylesheet">
+        <link href="<?php echo @PIGCMS_TPL_STATIC_PATH; ?>
+css/cashier.css" rel="stylesheet">
+        <link href="<?php echo @RlStaticResource; ?>
+plugins/css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+        <link href="<?php echo @RlStaticResource; ?>
+plugins/css/datapicker/datepicker3.css" rel="stylesheet">
         <link rel="stylesheet" href="/Cashier/pigcms_static/plugins/css/alert.css">
-        <script src="{pg:$smarty.const.RlStaticResource}plugins/js/datapicker/bootstrap-datepicker.js"></script>
+        <script src="<?php echo @RlStaticResource; ?>
+plugins/js/datapicker/bootstrap-datepicker.js"></script>
         <script
         src="http://cashier.b0.upaiyun.com/pigcms_static/plugins/js/chartJs/Chart.min.js"></script>
         <!-- Data picker -->
@@ -110,10 +122,18 @@
     <body>
 
         <div id="wrapper">
-            {pg:include file="$tplHome/System/public/leftmenu.tpl.php"}
+            <?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => ($this->_tpl_vars['tplHome'])."/System/public/leftmenu.tpl.php", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 
             <div id="page-wrapper" class="gray-bg">
-                {pg:include file="$tplHome/System/public/top.tpl.php"}
+                <?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => ($this->_tpl_vars['tplHome'])."/System/public/top.tpl.php", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <div class="col-lg-10">
                         <h2>商家结算</h2>
@@ -138,8 +158,8 @@
                     <div class="row">
                         <div class="tit">
                             <ul class="clearfix " style="margin-bottom: 0px; padding-left: 16px;">
-                               <li {pg:if $type==1} class="cont" {pg:/if}> <a href="/merchants.php?m=System&c=settlement&a=cashapply">待处理</a></li>
-                                <li {pg:if $type==2} class="cont" {pg:/if}><a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success">已处理</a></li>
+                               <li <?php if ($this->_tpl_vars['type'] == 1): ?> class="cont" <?php endif; ?>> <a href="/merchants.php?m=System&c=settlement&a=mset">待划账</a></li>
+                                <li <?php if ($this->_tpl_vars['type'] == 2): ?> class="cont" <?php endif; ?>><a href="/merchants.php?m=System&c=settlement&a=mdebit">已划账</a></li>
 
 
                             </ul>
@@ -160,15 +180,18 @@
                                     <div id="dataselect" class="form-group" style="padding: 0 10px;">
                                         <div id="datepicker" class="input-daterange">
                                             <label class="font-noraml">商户名称</label>
-                                            <input class="input form-control" type="text" name="name" value="{pg: if (isset($getdata.name))} {pg: $getdata.name}{pg:/if}" placeholder="输入商户名称" style="width: 17%;border-radius: 3px;height: 30px; margin-bottom: 0px;">
+                                            <input class="input form-control" type="text" name="name" value="<?php if (( isset ( $this->_tpl_vars['getdata']['name'] ) )): ?> <?php echo $this->_tpl_vars['getdata']['name']; ?>
+<?php endif; ?>" placeholder="输入商户名称" style="width: 17%;border-radius: 3px;height: 30px; margin-bottom: 0px;">
                                             <label class="font-noraml">选择日期</label>&nbsp;&nbsp;&nbsp;
-                                            <input type="text" value="{pg: if (isset($getdata.start))} {pg: $getdata.start}{pg:/if}" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width:17%; height: 30px;border-radius:3px">
+                                            <input type="text" value="<?php if (( isset ( $this->_tpl_vars['getdata']['start'] ) )): ?> <?php echo $this->_tpl_vars['getdata']['start']; ?>
+<?php endif; ?>" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width:17%; height: 30px;border-radius:3px">
                                             &nbsp;<span> 到 </span>&nbsp;
-                                            <input type="text" value="{pg: if (isset($getdata.end))}{pg:$getdata.end}{pg:/if}" name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px; width: 17%;height: 30px;border-radius:3px">
+                                            <input type="text" value="<?php if (( isset ( $this->_tpl_vars['getdata']['end'] ) )): ?><?php echo $this->_tpl_vars['getdata']['end']; ?>
+<?php endif; ?>" name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px; width: 17%;height: 30px;border-radius:3px">
                                             &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=settlement&a=data2Excel&type=mch" >导出excel</a><br>
-                                            <!--  <a class="btn btn-primary"  style="width:100px; float: right ;margin-right: 144px; margin-top: 10px" id="jiesuan">结算</a>
-                                            <a class="btn btn-primary"  style="width:100px; float: right; margin-right: 10px; margin-top: 10px;" href="/merchants.php?m=Index&c=auto&a=index" target="_blank">一键代付</a>-->
+                                            <a class="btn btn-primary"  style="width:100px; float: right ;margin-right: 144px; margin-top: 10px" id="jiesuan">结算</a>
+                                            <a class="btn btn-primary"  style="width:100px; float: right; margin-right: 10px; margin-top: 10px;" href="/merchants.php?m=Index&c=auto&a=index" target="_blank">一键代付</a>
 <!--                                            <a class="btn btn-primary"  style="width:110px;" href="/merchants.php?m=Index&c=auto&a=day" target="_blank">获取最新账单</a>-->
                                         </div>
                                     </div>
@@ -182,59 +205,72 @@
 <!--                                                    <th style="text-align: center;"  data-hide="phone">开户姓名</th>-->
 <!--                                                    <th style="text-align: center;"  data-hide="phone">开户银行</th>-->
                                                     <th  style="text-align: center;">发起提现时间</th>
-                                                    <!-- <th style="text-align: center;" data-hide="phone">收款金额</th>-->
+                                                    <th style="text-align: center;" data-hide="phone">收款金额</th>
                                                     <th style="text-align: center;" data-hide="phone">提现金额</th>
                                                     <th style="text-align: center;" data-hide="phone">操作</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="js-list-body-region" id="table-list-body">
-                                                {pg: foreach item=v from=$rows}
+                                                <?php $_from = $this->_tpl_vars['rows']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['v']):
+?>
                                                 <tr class="widget-list-item bd_nr" style="text-align: center;">
-                                                    <td>{pg:$v.username}</td>
-<!--                                                    <td>{pg:$v.bankcardnum}</td>-->
-<!--                                                    <td>{pg:$v.banktruename}</td>-->
+                                                    <td><?php echo $this->_tpl_vars['v']['username']; ?>
+</td>
+<!--                                                    <td><?php echo $this->_tpl_vars['v']['bankcardnum']; ?>
+</td>-->
+<!--                                                    <td><?php echo $this->_tpl_vars['v']['banktruename']; ?>
+</td>-->
 <!--                                                    <td>-->
-<!--                                                        {pg: if ($v.bankname == "ICBC")}工商银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "ABC")}农业银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "BOC")}中国银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "CCB")}建设银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "CMB")}招商银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "BOCM")}交通银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "CMBC")}民生银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "CNCB")}中信银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "CEBB")}光大银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "CIB")}兴业银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "BOB")}北京银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "GDB")}广发银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "HXB")}华夏银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "PAB")}平安银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "BOS")}上海银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "BOHC")}渤海银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "BOJ")}江苏银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "SPDB")}浦发银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "PSBC")}邮储银行{pg:/if}-->
-<!--                                                        {pg: if ($v.bankname == "")}其他银行{pg:/if}-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'ICBC' )): ?>工商银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'ABC' )): ?>农业银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'BOC' )): ?>中国银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'CCB' )): ?>建设银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'CMB' )): ?>招商银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'BOCM' )): ?>交通银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'CMBC' )): ?>民生银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'CNCB' )): ?>中信银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'CEBB' )): ?>光大银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'CIB' )): ?>兴业银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'BOB' )): ?>北京银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'GDB' )): ?>广发银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'HXB' )): ?>华夏银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'PAB' )): ?>平安银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'BOS' )): ?>上海银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'BOHC' )): ?>渤海银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'BOJ' )): ?>江苏银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'SPDB' )): ?>浦发银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == 'PSBC' )): ?>邮储银行<?php endif; ?>-->
+<!--                                                        <?php if (( $this->_tpl_vars['v']['bankname'] == "" )): ?>其他银行<?php endif; ?>-->
 <!--                                                    </td>-->
-                                                    <td>{pg:$v.addtime}</td>
-                                                    <!--<td>{pg:$v.money2}</td>-->
-                                                    <td>{pg:$v.money}</td>
+                                                    <td><?php echo $this->_tpl_vars['v']['addtime']; ?>
+</td>
+                                                    <td><?php echo $this->_tpl_vars['v']['money2']; ?>
+</td>
+                                                    <td><?php echo $this->_tpl_vars['v']['money']; ?>
+</td>
                                                     <td>
                                                         <p>
-                                                            {pg: if ($v.status == "0")}
-                                                            <button class="btn btn-sm btn-info alert-btn5" data-id="{pg:$v.id}"  data-mid="{pg:$v.mid}" data-money="{pg:$v.money}"  style="background: #008fd3;">划账</button>
-                                                            <a href="/merchants.php?m=System&c=settlement&a=medit&id={pg:$v.id}"><button class="btn btn-sm btn-info" style="background: #008fd3;">修改</button>
-                                                            {pg: /if}
+                                                            <?php if (( $this->_tpl_vars['v']['status'] == '0' )): ?>
+                                                            <button class="btn btn-sm btn-info alert-btn5" data-id="<?php echo $this->_tpl_vars['v']['id']; ?>
+"  data-mid="<?php echo $this->_tpl_vars['v']['mid']; ?>
+" data-money="<?php echo $this->_tpl_vars['v']['money']; ?>
+"  style="background: #008fd3;">划账</button>
+                                                            <a href="/merchants.php?m=System&c=settlement&a=medit&id=<?php echo $this->_tpl_vars['v']['id']; ?>
+"><button class="btn btn-sm btn-info" style="background: #008fd3;">修改</button>
+                                                            <?php endif; ?>
                                                         </p>
                                                     </td>
 
                                                 </tr>
-                                                {pg:/foreach}
+                                                <?php endforeach; endif; unset($_from); ?>
 
                                             </tbody>
                                         </table>
 
                                     </div>
-                                    {pg:$pagebar}
+                                    <?php echo $this->_tpl_vars['pagebar']; ?>
+
                                 </div>
 
                                 <!--
@@ -250,11 +286,14 @@
                                     <div id="dataselect" class="form-group" style="padding: 0 10px;">
                                         <div id="datepicker" class="input-daterange">
                                             <label class="font-noraml">商户名称</label>
-                                            <input class="input form-control" type="text" name="name" {pg: if (isset($data.name))}{pg: $data.name}{pg:/if} placeholder="输入商户名称" style="width: 17%;border-radius:3px;height: 30px; margin-bottom: 0px;">
+                                            <input class="input form-control" type="text" name="name" <?php if (( isset ( $this->_tpl_vars['data']['name'] ) )): ?><?php echo $this->_tpl_vars['data']['name']; ?>
+<?php endif; ?> placeholder="输入商户名称" style="width: 17%;border-radius:3px;height: 30px; margin-bottom: 0px;">
                                             <label class="font-noraml">选择日期</label>&nbsp;&nbsp;&nbsp;
-                                            <input type="text" value="{pg: if (isset($data.start))}{pg: $data.start}{pg:/if}" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width: 17%;border-radius:3px;height: 30px">
+                                            <input type="text" value="<?php if (( isset ( $this->_tpl_vars['data']['start'] ) )): ?><?php echo $this->_tpl_vars['data']['start']; ?>
+<?php endif; ?>" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width: 17%;border-radius:3px;height: 30px">
                                             &nbsp;<span> 到 </span>&nbsp;
-                                            <input type="text" value="{pg: if (isset($data.end))}{pg: $data.end}{pg:/if}" name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px; width: 17%;border-radius:3px;height: 30px">
+                                            <input type="text" value="<?php if (( isset ( $this->_tpl_vars['data']['end'] ) )): ?><?php echo $this->_tpl_vars['data']['end']; ?>
+<?php endif; ?>" name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px; width: 17%;border-radius:3px;height: 30px">
                                             &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">
 <!--                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=settlement&a=data2Excel&type=mchb" >导出excel</a>-->
                                         </div>
@@ -264,43 +303,74 @@
                                         <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" data-filter=#filter style="margin-bottom: 0px;">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;"  data-hide="phone">商户名称</th>
                                                     <th style="text-align: center;"  data-hide="phone">银行卡号</th>
                                                     <th style="text-align: center;"  data-hide="phone">开户姓名</th>
                                                     <th style="text-align: center;"  data-hide="phone">开户银行</th>
                                                     <th  style="text-align: center;">发起提现时间</th>
-                                                    <!--  <th style="text-align: center;" data-hide="phone">收款金额</th>-->
+                                                    <th style="text-align: center;" data-hide="phone">收款金额</th>
                                                     <th style="text-align: center;" data-hide="phone">提现金额</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="js-list-body-region" id="table-list-body">
-                                                {pg:foreach item=vv from=$rows}
+                                                <?php $_from = $this->_tpl_vars['row']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+    foreach ($_from as $this->_tpl_vars['vv']):
+?>
                                                 <tr class="widget-list-item bd_nr" style="text-align: center;">
-                                                    <td>{pg:$vv.bank}</td>
-                                                    <td>{pg:$vv.name}</td>
+                                                    <td><?php echo $this->_tpl_vars['vv']['username']; ?>
+</td>
+                                                    <td><?php echo $this->_tpl_vars['vv']['bankcardnum']; ?>
+</td>
+                                                    <td><?php echo $this->_tpl_vars['vv']['banktruename']; ?>
+</td>
                                                     <td>
-                                                        {pg:$vv.bank_name}
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'ICBC' )): ?>工商银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'ABC' )): ?>农业银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'BOC' )): ?>中国银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'CCB' )): ?>建设银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'CMB' )): ?>招商银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'BOCM' )): ?>交通银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'CMBC' )): ?>民生银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'CNCB' )): ?>中信银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'CEBB' )): ?>光大银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'CIB' )): ?>兴业银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'BOB' )): ?>北京银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'GDB' )): ?>广发银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'HXB' )): ?>华夏银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'PAB' )): ?>平安银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'BOS' )): ?>上海银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'BOHC' )): ?>渤海银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'BOJ' )): ?>江苏银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'SPDB' )): ?>浦发银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == 'PSBC' )): ?>邮储银行<?php endif; ?>
+                                                        <?php if (( $this->_tpl_vars['vv']['bankname'] == "" )): ?>其他银行<?php endif; ?>
                                                     </td>
-                                                    <td>{pg:$vv.addtime}</td>
-                                                    <!--<td>{pg:$vv.money2}</td>-->
-                                                    <td>{pg:$vv.money}</td>
+                                                    <td><?php echo $this->_tpl_vars['vv']['addtime']; ?>
+</td>
+                                                    <td><?php echo $this->_tpl_vars['vv']['money2']; ?>
+</td>
+                                                    <td><?php echo $this->_tpl_vars['vv']['money']; ?>
+</td>
                                                     <td>
                                                         <p>
-                                                            {pg: if ($v.status == "1")}
-                                                            <!--<button class="btn btn-sm btn-info debit" data-id="{pg:$v.id}"  style="background: #008fd3;">处理提现</button>-->
-                                                            <button class="btn btn-sm btn-info deal" data-id="{pg:$v.id}"  style="background: #008fd3;">处理提现</button>
-                                                            {pg: /if}
+                                                            <?php if (( $this->_tpl_vars['v']['status'] == '0' )): ?>
+                                                            <button class="btn btn-sm btn-info debit" data-id="<?php echo $this->_tpl_vars['v']['id']; ?>
+"  style="background: #008fd3;">划账</button>
+                                                            <?php endif; ?>
                                                         </p>
                                                     </td>
 
                                                 </tr>
-                                                {pg:/foreach}
+                                                <?php endforeach; endif; unset($_from); ?>
 
 
                                             </tbody>
                                         </table>
-                                        <p style="text-align: right; padding-right: 150px; height: 50px; background: #f2f2f2; line-height: 50px;">合计金额:<?php echo $sum_money;?>元</p>
+                                        <p style="text-align: right; padding-right: 150px; height: 50px; background: #f2f2f2; line-height: 50px;">合计金额:<?php echo $this->_tpl_vars['total']; ?>
+元</p>
                                     </div>
-                                    {pg:$page}
+                                    <?php echo $this->_tpl_vars['page']; ?>
+
                                 </div>
 
                                 <!--
@@ -319,7 +389,11 @@
                         </div>
                     </div>
                 </div>
-                {pg:include file="$tplHome/System/public/footer.tpl.php"}
+                <?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => ($this->_tpl_vars['tplHome'])."/System/public/footer.tpl.php", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
             </div>
         </div>
 
@@ -365,13 +439,16 @@
     </script>
 
     <!-- FooTable -->
-    <script src="{pg:$smarty.const.RlStaticResource}plugins/js/footable/footable.all.min.js"></script>
+    <script src="<?php echo @RlStaticResource; ?>
+plugins/js/footable/footable.all.min.js"></script>
 
     <!-- iCheck -->
-    <script src="{pg:$smarty.const.RlStaticResource}plugins/js/iCheck/icheck.min.js"></script>
+    <script src="<?php echo @RlStaticResource; ?>
+plugins/js/iCheck/icheck.min.js"></script>
 
     <!-- Jquery Validate -->
-    <script src="{pg:$smarty.const.RlStaticResource}plugins/js/validate/jquery.validate.min.js"></script>
+    <script src="<?php echo @RlStaticResource; ?>
+plugins/js/validate/jquery.validate.min.js"></script>
 
 
     <script type="text/javascript">

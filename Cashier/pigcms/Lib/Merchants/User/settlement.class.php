@@ -39,18 +39,15 @@ class settlement_controller extends common_controller
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
             curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-            $result = curl_exec($ch);var_dump($result);die;
+            $result = curl_exec($ch);
             $lastobj=json_decode($result,true);
-            echo $lastobj;exit;
-            if($lastobj['msg']['code']==2000)
-            {
-               
-                 
-                $this->dexit(array('errcode'=>1,'msg'=>'申请提现成功!'));
-            }else
-            {
-                $this->dexit(array('errcode'=>0,'errmsg'=>'申请提现失败'));
-            }
+//             if($lastobj['msg']['code']==2000)
+//             {
+//                 $this->dexit(array('errcode'=>1,'msg'=>'申请提现成功!'));
+//             }else
+//             {
+//                 $this->dexit(array('errcode'=>0,'errmsg'=>'申请提现失败'));
+//             }
             curl_close($ch);
         }else 
         {
@@ -105,13 +102,16 @@ class settlement_controller extends common_controller
             bpBase::loadOrg('common_page');
             $p = new Page($_count, 10);
             $pagebar = $p->show(2);
+            $where2='mid='.$this->mid.' and addtime >'.strtotime(date('y-m-d ',time()).'00:00:00').' and addtime <'.strtotime(date('y-m-d ',time()).'23:59:59');
             $rows = M('cashier_another')->select($where,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
-//             $sum_money = 0;
-//             foreach ($rows as $rk => $v){
-//                 $sum_money += $v['money'];
+            $rowss= M('cashier_another')->select($where2,"*",$p->firstRow . ',' . $p->listRows,"id DESC");
+            $lists=M('cashier_another_astrict')->get_one('mid='.$this->mid);
+            $sum_money = 0;
+            foreach ($rowss as $rk => $v){
+                $sum_money += $v['money'];
 //                 $bank3 = json_decode($v['txt'],true);
 //                 $rows[$rk]['bank'] = $bank3;
-//             }
+            }
 //             $sqlObj = new model();
 //             $time = date('Y-m-d',time());
 //             $t = strtotime($time);

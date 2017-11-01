@@ -927,14 +927,11 @@ ETC;
             $p = new Page($_count, 15);
             $pagebar = $p->show(2);
             $rows = M('cashier_another')->select($where, '*', "$p->firstRow,$p->listRows",'addtime desc');
-            //     	foreach ($rows as &$v) {
-            //     		//鏌ヨ鍟嗘埛閾惰淇℃伅
-            // //     		$bank = M('cashier_bank')->get_one(array('mid'=>$v['mid']));
-            // //     		$v['banktruename'] = $bank['customerName'];
-            // //     		$v['bankname'] = $bank['settBankNo'];
-            // //     		$v['bankcardnum'] = $bank['acctNo'];
-            // //     		$v['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
-            //     	}
+                 $sum_money=0;
+                	foreach ($rows as $v) {
+                        $sum_money+=$v['money'];
+                	}
+        	$this->assign('sum_money',$sum_money);
             $this->assign('rows',$rows);
             $this->assign('pagebar',$pagebar);
             $this->assign('getdata',$getdata);
@@ -961,14 +958,10 @@ ETC;
             $p = new Page($_count, 15);
             $pagebar = $p->show(2);
             $rows = M('cashier_another')->select($where, '*', "$p->firstRow,$p->listRows",'addtime desc');
-            //     	foreach ($rows as &$v) {
-            //     		//鏌ヨ鍟嗘埛閾惰淇℃伅
-            // //     		$bank = M('cashier_bank')->get_one(array('mid'=>$v['mid']));
-            // //     		$v['banktruename'] = $bank['customerName'];
-            // //     		$v['bankname'] = $bank['settBankNo'];
-            // //     		$v['bankcardnum'] = $bank['acctNo'];
-            // //     		$v['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
-            //     	}
+            $sum_money=0;
+                	foreach ($rows as $v) {
+                        $sum_money+=$v['money'];
+                	}
             $this->assign('rows',$rows);
             $this->assign('pagebar',$pagebar);
             $this->assign('getdata',$getdata);

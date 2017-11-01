@@ -19,7 +19,7 @@ class auto2_controller extends base_controller
         echo "截止至".date("Y-m-d 22:59:59",strtotime("-1 day"))."<br/>";
         
         // 查出昨天未对账的成功订单
-        $order_sql = "SELECT o.pay_way,sum(o.income),m.company,o.mid,m.commission,m.alicommission,m.qqcommission
+        $order_sql = "SELECT o.pay_way,sum(o.income),m.company,o.mid,m.commission,m.alicommission,m.qqcommission,m.mtype
           FROM `cqcjcm_cashier_order` as o
           LEFT JOIN `cqcjcm_cashier_merchants` as m ON o.mid=m.mid
           LEFT JOIN `cqcjcm_cashier_bank` as b ON b.mid=m.mid
@@ -32,6 +32,7 @@ class auto2_controller extends base_controller
         $num = 0;
         foreach($order as $key => $s) {
             $mid = $s['mid'];
+            $mtype=$s['mtype'];
 
             // 昨天未对账的总金额
             $money = round($s['sum(o.income)'], 2);
@@ -90,7 +91,22 @@ class auto2_controller extends base_controller
                 // $mset['money2'] = $money;//收款金额
                 $mset['txt'] = json_encode($data, JSON_UNESCAPED_UNICODE);
                 $result = 1;
-                $result = M('cashier_msettlement')->insert($mset);
+                if($mtype==2)
+                {
+                    $result = M('cashier_msettlement')->insert($mset);
+                }else if($mtype==3)
+                {
+                    $data=M('cashier_another_astrict')->get_one(array('mid'=>$mid));
+                    if($data)
+                    {
+                        $result=M('cashier_another_astrict')->update(array('balance'=>$money2+$data['balance'],'balance_start'=>$money+$data['balance_start'],'balance_end'=>$money2+$data['balance_end']),array('mid'=>$mid));
+                    }else 
+                    {
+                        $result=M('cashier_another_astrict')->insert(array('balance'=>$money2,'balance_start'=>$money,'balance_end'=>$money2,'mid'=>$mid));
+                    }
+                    
+                }
+                
                 if (!empty($result)) {
                     $where2 = array(
                         'ispay' => 1,
