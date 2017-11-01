@@ -165,7 +165,7 @@ class jhzdf_controller extends base_controller{
             $otherinfo =$this->updateastrict($upmoney);
         }
         if(!empty($otherinfo) && $otherinfo){
-            echo "<script language=javascript>alert('提现成功!');history.back();</script>";
+            echo "<script language=javascript>alert('提现成功!');window.location.href='http://b.jizhipay.com/merchants.php?m=User&c=settlement&a=index';</script>";
             exit();
         }else{
             echo "<script language=javascript>alert('提现失败!');history.back();</script>";
@@ -310,7 +310,6 @@ class jhzdf_controller extends base_controller{
 
         if($_POST['amount']>$balance-3){//提现金额大于余额不能提现
             echo "<script language=javascript>alert('提现金额超过余额！');history.back();</script>";
-
             exit();
         }
 
