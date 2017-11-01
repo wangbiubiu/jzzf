@@ -7,7 +7,7 @@ bpBase::loadAppClass('base', '', 0);
  * Time: 11:00
  */
 class jhzdf_controller extends base_controller{
-    private function jzzdf($acct_id,$acct_name,$mobile,$amount,$order_id,$rows,$bank_settle_no,$balance,$bankname){
+    private function jzzdf($acct_id,$acct_name,$mobile,$amount,$order_id,$rows,$bank_settle_no,$balance,$bankname,$astrict){
 
         error_reporting(E_ALL^E_NOTICE^E_WARNING);
         header("Content-Type: text/html; charset=utf8");
@@ -83,8 +83,6 @@ class jhzdf_controller extends base_controller{
         //                         "12000",
         //                     "retMsg"=>
         //                         "请求代付成功");
-
-
         //        插入表格数据
         $info = array(
             "mid"=>$rows['mid'],
@@ -96,16 +94,17 @@ class jhzdf_controller extends base_controller{
             "memo"=>"商家提现",
             "bank_settle_no"=>$bank_settle_no,
             "addtime"=>date("Ymd",time()),
+            "paytime"=>time(),
             "bank_name"=>$bankname,
+            "remark"=>json_encode(["balance"=>$astrict['balance'],"balance_start"=>$astrict['balance_start'],"balance_end"=>$astrict['balance_end'],"balance_count"=>$astrict['balance_count']]),
         );
 
 
         //        把返回的参数与需要添加的数据传入该方法
         if($res['retCode']==12000){
-            $this->response($res,$info,$balance);
+            $this->response($res,$info,$balance,$rows['amount']);
         }else{
-            echo json_encode($res);
-            exit();
+            echo "<script language=javascript>alert('想要输出的内容');history.back();</script>";
         }
 
 
@@ -134,7 +133,10 @@ class jhzdf_controller extends base_controller{
         $strs= urldecode(http_build_query($arrs));
         //验签
     }
-    public function response($response,$info,$balance){
+
+
+
+    public function response($astrict,$info,$balance,$money){
         //返回流水
         //        $requestNo=$response['requestNo']?:"";
         //        $info['request_no']=$requestNo;
@@ -152,6 +154,8 @@ class jhzdf_controller extends base_controller{
         $this->addanother($info);
 
         if($info['status'] == 2){
+            $astrict['count']=$astrict['count']+1;
+            $astrict['balance_count']=$astrict['balance_count']+$money;
             $upmoney['balance']=$balance-($info['money']+3);
             $upmoney['mid']=$info['mid'];
             $otherinfo =$this->updateastrict($upmoney);
@@ -190,7 +194,90 @@ class jhzdf_controller extends base_controller{
      * mobile手机号
      * amount钱
      */
+
+    public function msg($code){
+        if($code==12003){
+            return json_encode(array("msg"=>"参数异常,银行卡参数异常！","code"=>"12003"));
+            exit();
+        }
+
+        if($code==12002){
+            return json_encode(array("msg"=>"参数异常,户名参数异常！","code"=>"12002"));
+            exit();
+        }
+
+        if($code==12004){
+            return json_encode(array("msg"=>"参数异常,金额类型参数异常！","code"=>"12004"));
+            exit();
+        }
+
+        if($code==12009){
+            return json_encode(array("msg"=>"总余额不足！","code"=>"12009"));
+            exit();
+        }
+
+        if($code==12005){
+            return json_encode(array("msg"=>"参数异常,代付类型参数异常！","code"=>"12005"));
+            exit();
+        }
+
+        if($code==12006){
+            return json_encode(array("msg"=>"参数异常,账户类型参数异常","code"=>"12006"));
+            exit();
+        }
+
+        if($code==12007){
+            return json_encode(array("msg"=>"参数异常,手机号码参数异常！","code"=>"12007"));
+            exit();
+        }
+
+        if($code==12008){
+            return json_encode(array("msg"=>"请求代付失败！","code"=>"12008"));
+            exit();
+        }
+
+        if($code==12010){
+            return json_encode(array("msg"=>"小于单笔最小代付金额！","code"=>"12010"));
+            exit();
+        }
+
+        if($code==12011){
+            return json_encode(array("msg"=>"大于单笔最大代付金额！","code"=>"12011"));
+            exit();
+        }
+
+        if($code==12012){
+            return json_encode(array("msg"=>"本日额度超限！","code"=>"12012"));
+            exit();
+        }
+
+        if($code==12013){
+            return json_encode(array("msg"=>"本月额度超限！","code"=>"12013"));
+            exit();
+        }
+
+        if($code==12014){
+            return json_encode(array("msg"=>"未找到代付渠道！","code"=>"12014"));
+            exit();
+        }
+
+        if($code==12015){
+            return json_encode(array("msg"=>"用途说明未空！","code"=>"12015"));
+            exit();
+        }
+
+        if($code==12016){
+            return json_encode(array("msg"=>"该时间段不允许交易！","code"=>"12016"));
+            exit();
+        }
+
+        if($code==12017){
+            return json_encode(array("msg"=>"银行预留手机号不能为空！","code"=>"12017"));
+            exit();
+        }
+    }
     public function jdf(){
+        echo 111;
         //        二维码id
         if (empty($_POST['ewmid'])){
             echo json_encode(array("msg"=>"ewmid为空！","code"=>"4000"));
@@ -205,7 +292,6 @@ class jhzdf_controller extends base_controller{
         $rows = M('cashier_qrcode')->get_one("qrcode_id='" . $_POST['ewmid'] . "'");
 
         $astrict=M('cashier_another_astrict')->get_one("mid='" . $rows['mid'] . "'");
-//        var_dump($astrict);exit;
         //        资金池
         $upastrict=$astrict['upastrict'];
         //        每日提现上限
@@ -217,7 +303,7 @@ class jhzdf_controller extends base_controller{
 
 
 
-        if($_POST['amount']>$balance-2){//提现金额大于余额不能提现
+        if($_POST['amount']>$balance-3){//提现金额大于余额不能提现
             echo json_encode(array("msg"=>"提现金额超过余额","code"=>"4011"));
             exit();
         }
@@ -296,16 +382,11 @@ class jhzdf_controller extends base_controller{
             //            生成订单
             $orderid = '22' . date('YmdHis') . mt_rand(11111111, 99999999) . substr(time(), 2);
             //            调用接口
-
-
-
             $info['balance']=$balance;
-            $this->jzzdf($_POST['acct_id'],$_POST['acct_name'],$_POST['mobile'],$info['amount'],$orderid,$rows,$_POST['bank_settle_no'],$balance,$_POST['bank_name']);
+            $this->jzzdf($_POST['acct_id'],$_POST['acct_name'],$_POST['mobile'],$info['amount'],$orderid,$rows,$_POST['bank_settle_no'],$balance,$_POST['bank_name'],$astrict);
         } else {
             echo json_encode(array("msg"=>"ewmid不存在！","code"=>"4005"));
             exit();
         }
     }
-
-
 }
