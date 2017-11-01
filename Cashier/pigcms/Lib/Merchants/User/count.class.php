@@ -130,6 +130,9 @@ class count_controller extends common_controller
         if (!$qq) {
             $qq = 0;
         }
+        $mtype=M('cashier_merchants')->get_one(array('mid'=>$this->mid));
+        $mtype=$mtype['mtype'];
+        
         //总金额统计
         $sql3 = "SELECT SUM(`goods_price`) as count FROM " . $tablepre . 'cashier_order as ordr where ' . $whereStr;
         $total = $sqlObj->get_varBySql($sql3, 'count');

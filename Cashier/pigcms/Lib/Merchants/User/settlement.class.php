@@ -41,6 +41,7 @@ class settlement_controller extends common_controller
             curl_setopt($ch, CURLOPT_TIMEOUT, 30);
             $result = curl_exec($ch);
             $lastobj=json_decode($result,true);
+            echo $result;
 //             if($lastobj['msg']['code']==2000)
 //             {
 //                 $this->dexit(array('errcode'=>1,'msg'=>'申请提现成功!'));
