@@ -243,13 +243,18 @@ class merchant_controller extends common_controller
                // $this->errorTip('请填写支付宝支付费率');
             }
             $makeMerchant['alicommission'] = $data['alicommission'] / 100;
-
+            //判断支付宝
+            if (empty($data['commission_jhzqq'])) {
+                // $this->errorTip('请填写支付宝支付费率');
+            }
+            $makeMerchant['qqcommission'] = $data['commission_jhzqq'] / 100;
             /*  // 检查费率是否超过极限值
              $rateali =  M('cashier_wxrebate')->get_var(array('type'=>2),'rebate');
              if ( $rateali >= $makeMerchant['alicommission']) {
                  $this->errorTip('支付宝费率超出了平台的极限');
              } */
-
+            if($data['mtype']==3){unset($makeMerchant['alicommission']);}
+            if($data['mtype']!=3){unset($makeMerchant['qqcommission']);}
             $makeMerchant['realname'] = $data['realname'];
             $makeMerchant['company'] = $data['company'];
             $makeMerchant['mchid'] = rand(10000000, 99999999);

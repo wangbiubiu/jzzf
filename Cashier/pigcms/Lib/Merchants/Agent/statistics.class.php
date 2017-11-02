@@ -170,7 +170,7 @@ class statistics_controller extends common_controller
 	public function data2ExcelMerchants () {
 		$obj = new model();
 		$agent =M('cashier_agent')->get_var(array('aid'=>$this->aid),'uname');
-		$mchs = M('cashier_merchants')->get_all('mid,username,commission,alicommission','',array('aid'=>$this->aid));
+		$mchs = M('cashier_merchants')->get_all('mid,username,commission,alicommission,qqcommission,mtype','',array('aid'=>$this->aid));
 		// 字段
 		$fields = 'mid,pay_way,sum(income) as income,sum(goods_price) as sum, count(id) as count';
 		
@@ -179,11 +179,13 @@ class statistics_controller extends common_controller
 			
 			$whereStr = 'where ispay = 1 AND  mid ='.$v['mid'];
 			$sql = 'select '.$fields.' from '.$this->tablepre.'cashier_order '.$whereStr.' AND pay_way = "weixin" ';
-
 			$sql2 = 'select '.$fields.' from '.$this->tablepre.'cashier_order '.$whereStr.' AND pay_way = "alipay" ';
+			$sql3= 'select '.$fields.' from '.$this->tablepre.'cashier_order '.$whereStr.' AND pay_way = "qq" ';
+			
 			$weixin = $obj->selectBySql($sql);
-
 			$alipay = $obj->selectBySql($sql2);
+			$qqpay = $obj->selectBySql($sql3);
+			
 			$arr = array();
 			if ($weixin) {
 				$arr['mid'] = $v['mid'];
@@ -203,29 +205,52 @@ class statistics_controller extends common_controller
 				$arr['cms']  = $v['commission'];
 
 			}
-
+            
 			$list[] =$arr;
-			$arr=array();
-			if ($alipay) {
-				$arr['mid'] = $v['mid'];
-				$arr['saler'] =$v['username'];
-				$arr['income'] = $alipay[0]['income']?$alipay[0]['income']:0;
-				$arr['count'] = $alipay[0]['count']?$alipay[0]['count']:0;
-				$arr['pay_way'] = '支付宝支付';
-				$arr['total'] = $alipay[0]['sum']?$alipay[0]['sum']:0;
-				$arr['cms']  = $v['alicommission'];
-			}else{
-				$arr['mid'] = $v['mid'];
-				$arr['saler'] =$v['username'];
-				$arr['income'] = '0';
-				$arr['count'] = '0';
-				$arr['pay_way'] = '支付宝支付';
-				$arr['total'] = '0';
-				$arr['cms']  = $v['alicommission'];
-
+			if($v['mtype']!=3){
+    			$arr=array();
+    			if ($alipay) {
+    				$arr['mid'] = $v['mid'];
+    				$arr['saler'] =$v['username'];
+    				$arr['income'] = $alipay[0]['income']?$alipay[0]['income']:0;
+    				$arr['count'] = $alipay[0]['count']?$alipay[0]['count']:0;
+    				$arr['pay_way'] = '支付宝支付';
+    				$arr['total'] = $alipay[0]['sum']?$alipay[0]['sum']:0;
+    				$arr['cms']  = $v['alicommission'];
+    			}else{
+    				$arr['mid'] = $v['mid'];
+    				$arr['saler'] =$v['username'];
+    				$arr['income'] = '0';
+    				$arr['count'] = '0';
+    				$arr['pay_way'] = '支付宝';
+    				$arr['total'] = '0';
+    				$arr['cms']  = $v['alicommission'];
+    
+    			}
+    			$list[] =$arr;	
 			}
-			$list[] =$arr;		
-			
+			if($v['mtype']==3){
+    			$arr=array();
+    			if ($qqpay) {
+    			    $arr['mid'] = $v['mid'];
+    			    $arr['saler'] =$v['username'];
+    			    $arr['income'] = $qqpay[0]['income']?$qqpay[0]['income']:0;
+    			    $arr['count'] = $qqpay[0]['count']?$qqpay[0]['count']:0;
+    			    $arr['pay_way'] = 'qq';
+    			    $arr['total'] = $qqpay[0]['sum']?$qqpay[0]['sum']:0;
+    			    $arr['cms']  = $v['qqcommission'];
+    			}else{
+    			    $arr['mid'] = $v['mid'];
+    			    $arr['saler'] =$v['username'];
+    			    $arr['income'] = '0';
+    			    $arr['count'] = '0';
+    			    $arr['pay_way'] = 'qq';
+    			    $arr['total'] = '0';
+    			    $arr['cms']  = $v['qqcommission'];
+    			
+    			}
+    			$list[] =$arr;
+			}
 		}
 
 
@@ -514,7 +539,7 @@ class statistics_controller extends common_controller
 		$page = new Page($pageCount,10);
 		$p = $page->show();
 		$limitStr = $page->firstRow.','.$page->listRows;
-		$fields = 'mid,aid,username,commission,company,alicommission,mtype';
+		$fields = 'mid,aid,username,commission,company,alicommission,qqcommission,mtype';
 		$order = '`mid` DESC';
 		$merchants = M('cashier_merchants')->select($where,$fields,$limitStr,$order);
 
@@ -613,7 +638,7 @@ class statistics_controller extends common_controller
 			$stc[$mv['pay_way']]['income']=$mv['income'];
 			$sumIncome+=$mv['income'];
 		}
-        
+//         var_dump($stc);die;
 		// 订单列表
 		$whereStr = 'mid = ' .$getdata['mid']. '  AND ispay=1 '.$payway;
         if (!empty($getdata['start'])){
@@ -641,6 +666,8 @@ class statistics_controller extends common_controller
 			$mmv['branch_name'] = M('cashier_stores')->get_var(array('id'=>$mmv['storeid']), $data = 'branch_name');
 			$mmv['business_name'] = M('cashier_stores')->get_var(array('id'=>$mmv['storeid']), $data = 'business_name');
 		}
+		
+		$mtype=M('cashier_merchants')->get_one(array('mid'=>$_SESSION['mid']));$mtype=$mtype['mtype'];
 		include $this->showTpl();
 	}
 }

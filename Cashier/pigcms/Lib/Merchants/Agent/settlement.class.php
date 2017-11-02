@@ -31,16 +31,19 @@ class settlement_controller extends common_controller
 
             if (empty($result)) {
 //        1.查出 代理商的商家费率
-                $agent = M('cashier_agent')->select(['aid' => $this->aid], 'commission,alicommission,ancommission,analicommission');
+                $agent = M('cashier_agent')->select(['aid' => $this->aid], 'commission,alicommission,ancommission,analicommission,wxcommission,qqcommission');
 
 //        2查出 商家的 MId 微信费率 和 支付宝费率
 //        $shanjiaSQL="select mid,mtype,commission,alicommission from cqcjcm_cashier_merchants where aid =$this->aid";
-                $merchant = M('cashier_merchants')->select(['aid' => $this->aid], 'mid,company,mtype,commission,alicommission');
+                $merchant = M('cashier_merchants')->select(['aid' => $this->aid], 'mid,company,mtype,commission,alicommission,qqcommission');
 //        dump($merchant);exit();
                 $teiwxyongjing = 0;//特约 商户微信佣金
                 $teialiyongjing = 0;//特约 商户支付宝佣金
                 $yinwxyongjing = 0;//银行 商户微信佣金
                 $yinaliyongjing = 0;//银行 支付宝佣金
+                $jhzwxyongjing=0;//金海哲用户微信佣金
+                $jhzqqyongjing=0;//金海哲用户qq佣金
+                $jinhaizhe=[];//金海哲用户
                 $count_money = 0;
                 $contributings = [];//特约商户
                 $bankings = [];//银行商户
@@ -48,6 +51,7 @@ class settlement_controller extends common_controller
                     if ($v['mtype'] == 1) {//等于一表示特约商户
 
                         $wxrate = $v['commission'] - $agent[0]['commission'];//计算出代理商的微信 佣金费率
+                        
                         $alirate = $v['alicommission'] - $agent[0]['alicommission'];//计算出代理商的支付宝 佣金费率
 //                拼接查出微信 的sql
                         $wxsql = "mid={$v['mid']} AND ispay=1 AND pay_way='weixin' AND paytime > {$start} AND paytime<{$end}";
@@ -81,7 +85,7 @@ class settlement_controller extends common_controller
 
                         //累计相加 出支付宝佣金
                         $teialiyongjing = $teialiyongjing + $aliliushui[0]['income'] * $alirate;
-                    } else {
+                    } else if($v['mtype']==2){
 
 //                银行直连商户
                         $wxrate = $v['commission'] - $agent[0]['ancommission'];//计算出代理商的微信 佣金费率
@@ -117,12 +121,48 @@ class settlement_controller extends common_controller
                         //累计相加 出支付宝佣金
                         $yinaliyongjing = $yinaliyongjing + $aliliushui[0]['income'] * $alirate;
 
+                    }else if($v['mtype']==3){
+
+//                银行直连商户
+                        $wxrate = $v['commission'] - $agent[0]['wxcommission'];//计算出代理商的微信 佣金费率
+                        $qqrate = $v['qqcommission'] - $agent[0]['qqcommission'];//计算出代理商的qq 佣金费率
+//                拼接查出微信 的sql
+                        $wxsql = "mid={$v['mid']} AND ispay=1 AND pay_way='weixin' AND paytime > {$start} AND paytime<{$end}";
+
+//                拼接查出 qq的sql
+                        $qqsql = "mid={$v['mid']} AND ispay=1 AND pay_way='qq' AND paytime > {$start} AND paytime<{$end}";
+//                查出门店下微信的所有支付流水
+                        $wxliushui = M('cashier_order')->select($wxsql, 'round(sum(income),2)as income ');
+                        $count_money = $count_money + $wxliushui[0]['income'];
+//                if (!empty($wxliushui[0]['income'])) {
+                        //查出微信的所有价格保存到数组中
+                        $banking = ['company' => $v['company'], 'wx_money' => $wxliushui[0]['income'], 'type' => '2', 'mid' => $v['mid']];
+//                }
+                        //累计相加 出微信佣金
+                        $jhzwxyongjing = $jhzwxyongjing + $wxliushui[0]['income'] * $wxrate;
+//                查出门店下qq的所有支付流水
+                        $qqliushui = M('cashier_order')->select($qqsql, 'round(sum(income),2)as income ');
+                        $count_money = $count_money + $qqliushui[0]['income'];
+                        $jinhaizhe[] = [
+                            'company' => $banking['company'],
+                            'wx_money' => $banking['wx_money'],
+                            'wxrate' => $wxrate,
+                            'wx_brokerage' => $banking['wx_money'] * $wxrate,
+                            'qqrate' => $qqrate,
+                            'qq_money' => $qqliushui[0]['income'],
+                            'qq_brokerage' => $qqliushui[0]['income'] * $qqrate,
+                            'type' => $banking['type'],
+                            'mid' => $banking['mid']
+                        ];
+                        //累计相加 出qq佣金
+                        $jhzqqyongjing = $jhzqqyongjing + $qqliushui[0]['income'] * $qqrate;
+
                     }
                 }
                 //总提现金额
-                $counts = $teiwxyongjing + $teialiyongjing + $yinwxyongjing + $yinaliyongjing;
+                $counts = $teiwxyongjing + $teialiyongjing + $yinwxyongjing + $yinaliyongjing+$jhzwxyongjing+$jhzqqyongjing;
 //        合并 数据
-                $array = array_merge($contributings, $bankings);
+                $array = array_merge($contributings, $bankings,$jinhaizhe);
 //        }
 //        把计算出的所有数据 存入数据表中
 //        1先查询出aid对于的数据 如果没有 就进行保存
@@ -147,6 +187,9 @@ class settlement_controller extends common_controller
                         'ali_money' => empty($value['ali_money']) ? 0 : $value['ali_money'],
                         'alirate' => $value['alirate'],
                         'ali_brokerage' => $value['ali_brokerage'],
+                        'qq_money' => empty($value['qq_money']) ? 0 : $value['qq_money'],
+                        'qqrate' => $value['qqrate'],
+                        'qq_brokerage' => $value['qq_brokerage'],
                         'type' => $value['type'],
                         'mid' => $value['mid'],
                         'date' => $date

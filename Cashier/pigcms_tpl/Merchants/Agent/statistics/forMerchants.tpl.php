@@ -156,7 +156,8 @@ button{ color:#ffffff}
 
                                     <td>
                                             <p>微信</p>
-                                            <p>支付宝城市</p>
+                                            <?php if($ovv['mtype']!=3){?><p>支付宝</p><?php }?>
+                                            <?php if($ovv['mtype']==3){?><p>qq</p><?php }?>
                                     </td>
                                     
                                     <?php if (!isset($ovv['static'])) { ?>
@@ -170,7 +171,8 @@ button{ color:#ffffff}
                                     </td>
                                      <td>
                                         <p><?php if ( !empty($ovv['commission']) ){ echo $ovv['commission']*100 .' %';}else{echo '0';} ?></p>
-                                        <p><?php if ( !empty($ovv['alicommission']) ){ echo $ovv['alicommission']*100 .' %';}else{echo '0';} ?></p>
+                                        <?php if($ovv['mtype']!=3){?><p><?php if ( !empty($ovv['alicommission']) ){ echo $ovv['alicommission']*100 .' %';}else{echo '0';} ?></p><?php }?>
+                                        <?php if($ovv['mtype']==3){?><p><?php if ( !empty($ovv['qqcommission']) ){ echo $ovv['qqcommission']*100 .' %';}else{echo '0';} ?></p><?php }?>
                                     </td>
                                     <td>
                                         <p>0</p>
@@ -180,17 +182,20 @@ button{ color:#ffffff}
                                     <?php if (isset($ovv['static'])) { ?>
                                     <td>
                                         <p><?php if (isset($ovv['static']['weixin']['total'])) {echo round($ovv['static']['weixin']['total'],2);}else{echo 0;} ?></p>
-                                        <p><?php if (isset($ovv['static']['alipay']['total'])) {echo round($ovv['static']['alipay']['total'],2);}else{echo 0;} ?></p>
+                                        <?php if($ovv['mtype']!=3){?><p><?php if (isset($ovv['static']['alipay']['total'])) {echo round($ovv['static']['alipay']['total'],2);}else{echo 0;} ?></p><?php }?>
+                                        <?php if($ovv['mtype']==3){?><p><?php if (isset($ovv['static']['qq']['total'])) {echo round($ovv['static']['qq']['total'],2);}else{echo 0;} ?></p><?php }?>
                                     </td>
                                     <td>
                                         <p><?php if (isset($ovv['static']['weixin']['num'])) {echo $ovv['static']['weixin']['num'];}else{echo 0;} ?></p>
 
-                                        <p><?php if (isset($ovv['static']['alipay']['num'])) {echo $ovv['static']['alipay']['num'];}else{echo 0;} ?></p>
+                                        <?php if($ovv['mtype']!=3){?><p><?php if (isset($ovv['static']['alipay']['num'])) {echo $ovv['static']['alipay']['num'];}else{echo 0;} ?></p><?php }?>
+                                        <?php if($ovv['mtype']==3){?><p><?php if (isset($ovv['static']['qq']['num'])) {echo $ovv['static']['qq']['num'];}else{echo 0;} ?></p><?php }?>
                                     </td>
                                     
                                      <td>
                                         <p><?php if ( !empty($ovv['commission']) ){ echo $ovv['commission']*100 .' %';}else{echo '0';} ?></p>
-                                        <p><?php if ( !empty($ovv['alicommission']) ){ echo $ovv['alicommission']*100 .' %';}else{echo '0';} ?></p>
+                                        <?php if($ovv['mtype']!=3){?><p><?php if ( !empty($ovv['alicommission']) ){ echo $ovv['alicommission']*100 .' %';}else{echo '0';} ?></p><?php }?>
+                                        <?php if($ovv['mtype']==3){?><p><?php if ( !empty($ovv['qqcommission']) ){ echo $ovv['qqcommission']*100 .' %';}else{echo '0';} ?></p><?php }?>
                                     </td>
                                     
                                     <td>

@@ -208,8 +208,8 @@ class count_controller extends common_controller
             }
           //  dump($order);
            //总计
-            $total_sum = $wxsum+$alisum;
-            $totalincome_sum = $wxincome_sum+$alicome_sum;
+            $total_sum = $wxsum+$alisum+$qqsum;
+            $totalincome_sum = $wxincome_sum+$alicome_sum+$qqcome_sum;
             $this->assign("today",date("Y-m-d"));
             $this->assign("wxsum",$wxsum);
             $this->assign("wxincome_sum",$wxincome_sum);
@@ -361,6 +361,8 @@ class count_controller extends common_controller
              foreach($order as &$v){
                 $v['paytime'] = (($v['paytime'] ? date('Y-m-d H:i:s', $v['paytime']) : ''));
             }
+            $mtype=M('cashier_merchants')->get_one(array('mid'=>$_SESSION['mid']));$mtype=$mtype['mtype'];
+            $this->assign('mtype',$mtype);
             $this->assign("today",date("Y-m-d"));
             $this->assign('name',$name);
             $this->assign("wxsum",$wxsum);
@@ -588,7 +590,7 @@ class count_controller extends common_controller
                     $data[$k]['goods_price'] = $v['goods_price'];
                     $data[$k]['income'] = $v['income'];
                     $data[$k]['paytime'] = date('Y-m-d H:i:s',$v['paytime']);
-                    $data[$k]['pay_way'] = $v['pay_way']=='weixin' ? '微信支付' : '支付宝城市';
+                    $data[$k]['pay_way'] = $v['pay_way']=='weixin' ? '微信支付' : ($v['pay_way']=='qq' ? 'qq' : '支付宝');
                     $data[$k]['goods_describe'] = $v['goods_describe'];
                     $data[$k]['store'] = M('cashier_stores')->get_var(array('id'=>$v['storeid']),'branch_name');
                 }
@@ -611,7 +613,7 @@ class count_controller extends common_controller
                     $data[$k]['goods_price'] = $v['goods_price'];
                     $data[$k]['income'] = $v['income'];
                     $data[$k]['paytime'] = date('Y-m-d H:i:s',$v['paytime']);
-                    $data[$k]['pay_way'] = $v['pay_way']=='weixin' ? '微信支付' : '支付宝城市';
+                    $data[$k]['pay_way'] = $v['pay_way']=='weixin' ? '微信支付' : ($v['pay_way']=='qq' ? 'qq' : '支付宝');
                     $data[$k]['goods_describe'] = $v['goods_describe'];
                     $data[$k]['store'] = M('cashier_stores')->get_var(array('id'=>$v['storeid']),'branch_name');
                 }

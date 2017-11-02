@@ -284,7 +284,8 @@ class count_controller extends common_controller
             $v['wxcount'] = $sqlObj->get_varBySql($wxnumsql, 'num');
             $wxincomesql = "SELECT SUM(`income`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="weixin" AND storeid=' . $v['id'];
             $v['wxincome'] = $sqlObj->get_varBySql($wxincomesql, 'count') ?: 0;
-
+            
+            
             //支付宝统计
             $alisumsql = "SELECT SUM(`goods_price`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
             $v['alitotal_price'] = $sqlObj->get_varBySql($alisumsql, 'count') ?: 0;
@@ -292,13 +293,22 @@ class count_controller extends common_controller
             $v['alicount'] = $sqlObj->get_varBySql($alinumsql, 'num');
             $aliincomesql = "SELECT SUM(`income`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
             $v['aliincome'] = $sqlObj->get_varBySql($aliincomesql, 'count') ?: 0;
+            
+            //qq统计
+            $qqsumsql = "SELECT SUM(`goods_price`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="qq" AND storeid=' . $v['id'];
+            $v['qqtotal_price'] = $sqlObj->get_varBySql($qqsumsql, 'count') ?: 0;
+            $qqnumsql = "SELECT count(*) as num FROM " . $tablepre . 'cashier_order where ' . $whereStr . ' AND pay_way="qq" AND storeid=' . $v['id'];
+            $v['qqcount'] = $sqlObj->get_varBySql($qqnumsql, 'num');
+            $qqincomesql = "SELECT SUM(`income`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="qq" AND storeid=' . $v['id'];
+            $v['qqincome'] = $sqlObj->get_varBySql($qqincomesql, 'count') ?: 0;
             //总金额.总笔数.实收金额
-            $sum += $v['wxtotal_price'] + $v['alitotal_price'];
-            $num += $v['wxcount'] + $v['alicount'];
-            $income += $v['wxincome'] + $v['aliincome'];
+            $sum += $v['wxtotal_price'] + $v['alitotal_price']+$v['qqtotal_price'];
+            $num += $v['wxcount'] + $v['alicount']+$v['qqcount'];
+            $income += $v['wxincome'] + $v['aliincome']+$v['qqincome'];
             unset($v);
         }
-
+        $mtype=M('cashier_merchants')->get_one(array('mid'=>$this->mid));
+        $mtype=$mtype['mtype'];
         if ($this->isMobile()) {
             include $this->showTpl("storewap");
         } else {
@@ -384,11 +394,19 @@ class count_controller extends common_controller
         $weixin = $sqlObj->selectBySql($sql1);
         $weixin[0]['count'] ? $weixin['count'] = $weixin[0]['count'] : $weixin['count'] = 0;
         $weixin[0]['income'] ? $weixin['income'] = $weixin[0]['income'] : $weixin['income'] = 0;
+        
+        //支付宝统计
         $sql2 = "SELECT SUM(`goods_price`) as count,SUM(`income`) as income FROM " . $tablepre . 'cashier_order as ordr where ' . $whereStr . ' AND ordr.pay_way="alipay"';
         $alipay = $sqlObj->selectBySql($sql2);
         $alipay[0]['count'] ? $alipay['count'] = $alipay[0]['count'] : $alipay['count'] = 0;
         $alipay[0]['income'] ? $alipay['income'] = $alipay[0]['income'] : $alipay['income'] = 0;
 
+        //qq统计
+        $sql4 = "SELECT SUM(`goods_price`) as count,SUM(`income`) as income FROM " . $tablepre . 'cashier_order as ordr where ' . $whereStr . ' AND ordr.pay_way="qq"';
+        $qqpay = $sqlObj->selectBySql($sql4);
+        $qqpay[0]['count'] ? $qqpay['count'] = $qqpay[0]['count'] : $qqpay['count'] = 0;
+        $qqpay[0]['income'] ? $qqpay['income'] = $qqpay[0]['income'] : $qqpay['income'] = 0;
+        
         $sql3 = "SELECT SUM(`goods_price`) as count,SUM(`income`) as income FROM " . $tablepre . 'cashier_order as ordr where ' . $whereStr;
         $total = $sqlObj->selectBySql($sql3);
 
@@ -401,6 +419,8 @@ class count_controller extends common_controller
         } else {
             $sub = false;
         }
+        $mtype=M('cashier_merchants')->get_one(array('mid'=>$this->mid));
+        $mtype=$mtype['mtype'];
         if ($this->isMobile()) {
             $stor = M("cashier_stores")->get_one("id=" . $_SESSION['storeid'], "*");
             $storname = $stor['business_name'] . "&nbsp;" . $stor['branch_name'];
@@ -552,6 +572,7 @@ class count_controller extends common_controller
 
             $i = 0;
             $data = array();
+            $mtype=M('cashier_merchants')->get_one(array('mid'=>$_SESSION['mid']));$mtype=$mtype['mtype'];
             foreach ($store as $k => &$v) {
                 //微信统计
                 $data[$i]['branch_name'] = $v['branch_name'] . ' ' . $v['business_name'];
@@ -562,18 +583,32 @@ class count_controller extends common_controller
                 $data[$i]['count'] = $sqlObj->get_varBySql($wxnumsql, 'num');
                 $wxincomesql = "SELECT SUM(`income`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="weixin" AND storeid=' . $v['id'];
                 $data[$i]['income'] = $sqlObj->get_varBySql($wxincomesql, 'count') ?: 0;
-
-                //支付宝统计
-                $i++;
-                $data[$i]['branch_name'] = $v['branch_name'] . ' ' . $v['business_name'];
-                $data[$i]['pay'] = '支付宝城市';
-                $alisumsql = "SELECT SUM(`goods_price`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
-                $data[$i]['total_price'] = $sqlObj->get_varBySql($alisumsql, 'count') ?: 0;
-                $alinumsql = "SELECT count(*) as num FROM " . $tablepre . 'cashier_order where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
-                $data[$i]['count'] = $sqlObj->get_varBySql($alinumsql, 'num');
-                $aliincomesql = "SELECT SUM(`income`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
-                $data[$i]['income'] = $sqlObj->get_varBySql($aliincomesql, 'count') ?: 0;
-                $i++;
+                
+                if($mtype!=3){
+                    //支付宝统计
+                    $i++;
+                    $data[$i]['branch_name'] = $v['branch_name'] . ' ' . $v['business_name'];
+                    $data[$i]['pay'] = '支付宝';
+                    $alisumsql = "SELECT SUM(`goods_price`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
+                    $data[$i]['total_price'] = $sqlObj->get_varBySql($alisumsql, 'count') ?: 0;
+                    $alinumsql = "SELECT count(*) as num FROM " . $tablepre . 'cashier_order where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
+                    $data[$i]['count'] = $sqlObj->get_varBySql($alinumsql, 'num');
+                    $aliincomesql = "SELECT SUM(`income`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="alipay" AND storeid=' . $v['id'];
+                    $data[$i]['income'] = $sqlObj->get_varBySql($aliincomesql, 'count') ?: 0;
+                    $i++;
+                }
+                 if($mtype==3){                   
+                    //qq统计
+                    $data[$i]['branch_name'] = $v['branch_name'] . ' ' . $v['business_name'];
+                    $data[$i]['pay'] = 'qq';
+                    $qqsumsql = "SELECT SUM(`goods_price`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="qq" AND storeid=' . $v['id'];
+                    $data[$i]['total_price'] = $sqlObj->get_varBySql($qqsumsql, 'count') ?: 0;
+                    $qqnumsql = "SELECT count(*) as num FROM " . $tablepre . 'cashier_order where ' . $whereStr . ' AND pay_way="qq" AND storeid=' . $v['id'];
+                    $data[$i]['count'] = $sqlObj->get_varBySql($qqnumsql, 'num');
+                    $qqincomesql = "SELECT SUM(`income`) as count FROM " . $tablepre . 'cashier_order  where ' . $whereStr . ' AND pay_way="qq" AND storeid=' . $v['id'];
+                    $data[$i]['income'] = $sqlObj->get_varBySql($qqincomesql, 'count') ?: 0;
+                    $i++;
+                } 
             }
             $title = array('门店名称', '支付方式', '支付金额', '交易笔数', '收入');
             $filename = '商家:【' . $this->merchant['company'] . '】下的所有门店订单统计.xls';

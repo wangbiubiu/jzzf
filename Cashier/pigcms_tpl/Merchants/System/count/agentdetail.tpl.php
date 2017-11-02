@@ -172,7 +172,7 @@
                                                 <input type="text" value="{pg: if (isset($getdata.start))}{pg:$getdata.start}{pg:else}{pg:$today}{pg:/if}" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width: 15%; height:30px">
                                                 &nbsp;<span> 到 </span>&nbsp; 
                                                 <input type="text"  value="{pg: if (isset($getdata.end))}{pg:$getdata.end}{pg:else}{pg:$today}{pg:/if}" name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px;width: 15%; height:30px">
-                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&aid=<?php echo $_GET['aid']; ?>" >导出到excel</a>
+                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&aid=<?php echo $_SESSION['aid']; ?>" >导出到excel</a>
                                             </div>
                                         </div>
                                     </form>
@@ -246,8 +246,8 @@
                                             </div>
                                             <ul class="doughnut-legend">
                                                <li><span style="background-color:#33EA90"></span>微信支付</li>
-	                        		<li><span style="background-color:#00a3d2"></span>支付宝</li>
-	                        		<li><span style="background-color:#00ff33"></span>qq</li>
+            	                        		<li><span style="background-color:#00a3d2"></span>支付宝</li>
+            	                        		<li><span style="background-color:#00ff33"></span>qq</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -373,6 +373,12 @@
                 color: "#00a3d2",
             highlight: "#24c7f6",
                 label: "支付宝"
+            },
+            {
+                value: {pg: if $getdata.type=='qq'}{pg: 0 }{pg: else }{pg:$qqsum}{pg: /if},
+                color: "#00ff33",
+            highlight: "#24c7f6",
+                label: "qq"
             },
         ];
 

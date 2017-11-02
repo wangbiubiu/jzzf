@@ -118,8 +118,8 @@ class settlement_controller extends common_controller
             $sqlObj = new model();
             $sql = "SELECT SUM(`money`) as count FROM " ."cqcjcm_cashier_another where mid=".$this->mid." and addtime=$time";
             //        当天提现金额记录
-            $when_money = $sqlObj->get_varBySql($sql, 'count');
-            $sum_money=$when_money;
+            $when_money = $sqlObj->get_varBySql($sql, 'count');if($when_money==null){$when_money=0;}
+            $sum_money=$when_money;var_dump($sum_money);
 //             $sqlObj = new model();
 //             $time = date('Y-m-d',time());
 //             $t = strtotime($time);

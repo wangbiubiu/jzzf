@@ -164,7 +164,8 @@
                                             <select name="type" style=" width: 120px; height: 30px; margin-bottom: 0px">
                                                 <option value="">全部</option>
                                                 <option value="weixin" <?php if ($getdata['type']=='weixin'){ echo 'selected="selected"';} ?>>微信</option>
-                                                <option value="alipay" <?php if ($getdata['type']=='alipay'){ echo 'selected="selected"';} ?>>支付宝</option>
+                                                <?php if($mtype!=3){?><option value="alipay" <?php if ($getdata['type']=='alipay'){ echo 'selected="selected"';} ?>>支付宝</option><?php }?>
+                                                <?php if($mtype==3){?><option value="qq" <?php if ($getdata['type']=='qq'){ echo 'selected="selected"';} ?>>qq</option><?php }?>
                                             </select>
                                             <label class="font-noraml">选择日期</label>&nbsp;&nbsp;&nbsp;
                                             <input type="text" value="<?php if(isset($getdata['start'])) echo $getdata['start'];?>" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width: 20%;">
@@ -200,6 +201,12 @@
                                             <td><?php echo $alipay['count'];?></td>
                                             <td><?php echo $alipay['income'];?></td>
                                         </tr>
+                                    <?php  }elseif($getdata['type']=='qq'){?>
+                                        <tr>
+                                            <td>qq</td>
+                                            <td><?php echo $qqpay['count'];?></td>
+                                            <td><?php echo $qqpay['income'];?></td>
+                                        </tr>
                                     <?php  }else{?>
                                         <tr>
                                             <td><?php if($getdata['start'] && $getdata['end']){ echo $getdata['start'].'至'.$getdata['end'];}elseif($getdata['start']){ echo $getdata['start'].'起';}elseif($getdata['end']){ echo $getdata['end'].'止';}  else {  echo '全部';}?></td>
@@ -211,11 +218,20 @@
                                             <td><?php echo $weixin['count'];?></td>
                                             <td><?php echo $weixin['income'];?></td>
                                         </tr>
-                                        <tr>
-                                            <td>支付宝</td>
-                                            <td><?php echo $alipay['count'];?></td>
-                                            <td><?php echo $alipay['income'];?></td>
-                                        </tr>
+                                        <?php if($mtype!=3){?>
+                                            <tr>
+                                                <td>支付宝</td>
+                                                <td><?php echo $alipay['count'];?></td>
+                                                <td><?php echo $alipay['income'];?></td>
+                                            </tr>
+                                        <?php }?>
+                                        <?php if($mtype==3){?>
+                                            <tr>
+                                                <td>qq</td>
+                                                <td><?php echo $qqpay['count'];?></td>
+                                                <td><?php echo $qqpay['income'];?></td>
+                                            </tr>
+                                        <?php }?>
                                     <?php  }?>
                                     </tbody>
                                 </table>
@@ -232,12 +248,13 @@
                                     </div>
                                     <ul class="doughnut-legend">
                                         <li><span style="background-color:#33EA90"></span>微信支付</li>
-                                        <li><span style="background-color:#00a3d2"></span>支付宝</li>
+                                        <?php if($mtype!=3){?><li><span style="background-color:#00a3d2"></span>支付宝</li><?php }?>
+                                        <?php if($mtype==3){?><li><span style="background-color:#00ff33"></span>qq</li><?php }?>
                                     </ul>
                                 </div>
                             </div>
 
-                            <div class="clearfix">
+                            <div class="clearfix"><input type='text' style='display: none' value="<?php echo $mtype;?>" id='mtype'>
                                 <table border="1" class="payment1" style="margin: 30px 30px 30px 0px;" width="100%" bordercolor="#e0e0e0">
                                     <tbody>
                                     <tr>
@@ -354,21 +371,40 @@
 
 
         var helpers = Chart.helpers;
-        var doughnutData_m = [
-            {
-                value: <?php if($getdata['type']=='alipay'){ echo 0;}else{ echo $weixin['count'];} ?>,
-                color: "#33EA90",
-                highlight: "#4BFFA8",
-                label: "微信支付"
-            },
-            {
-                value: <?php if($getdata['type']=='weixin'){ echo 0;}else{ echo $alipay['count'];} ?>,
-                color: "#00a3d2",
-                highlight: "#24c7f6",
-                label: "支付宝"
-            },
-        ];
-
+        var mtype=$('#mtype').val();
+        if(mtype!=3){
+            var doughnutData_m = [
+                {
+                    value: <?php if($getdata['type']=='alipay'){ echo 0;}else{ echo $weixin['count'];} ?>,
+                    color: "#33EA90",
+                    highlight: "#4BFFA8",
+                    label: "微信支付"
+                },
+                {
+                    value: <?php if($getdata['type']=='weixin'){ echo 0;}else{ echo $alipay['count'];} ?>,
+                    color: "#00a3d2",
+                    highlight: "#24c7f6",
+                    label: "支付宝"
+                },
+            ];
+        }
+        if(mtype==3){
+            var doughnutData_m = [
+              {
+                  value: <?php if($getdata['type']=='qq'){ echo 0;}else{ echo $weixin['count'];} ?>,
+                  color: "#33EA90",
+                  highlight: "#4BFFA8",
+                  label: "微信支付"
+              },
+              {
+                  value: <?php if($getdata['type']=='weixin'){ echo 0;}else{ echo $qqpay['count'];} ?>,
+                  color: "#00ff33",
+                  highlight: "#24c7f6",
+                  label: "qq"
+              },
+          ];
+        }
+        
         var doughnutOptions = {
             segmentShowStroke: true,
             segmentStrokeColor: "#fff",

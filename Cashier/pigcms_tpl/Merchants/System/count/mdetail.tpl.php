@@ -164,14 +164,14 @@
                                                 <select name="type" style=" width: 120px; height: 30px; margin-bottom: 0px">
                                                     <option value="">全部</option>
                                                     <option value="weixin" {pg:if $getdata.type=='weixin'}selected="selected"{pg:/if}>微信</option>
-                                                    <option value="alipay" {pg:if $getdata.type=='alipay'}selected="selected"{pg:/if}>支付宝</option>
-                                                    <option value="qq" {pg:if $getdata.type=='qq'}selected="selected"{pg:/if}>qq</option>
+                                                    {pg:if $mtype!=3}<option value="alipay" {pg:if $getdata.type=='alipay'}selected="selected"{pg:/if}>支付宝</option>{pg:/if}
+                                                    {pg:if $mtype==3}<option value="qq" {pg:if $getdata.type=='qq'}selected="selected"{pg:/if}>qq</option>{pg:/if}
                                                 </select>
                                                 <label class="font-noraml">选择日期</label>&nbsp;&nbsp;&nbsp;
                                                 <input type="text"  value="{pg: if (isset($getdata.start))}{pg:$getdata.start}{pg:else}{pg:$today}{pg:/if}"  name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width: 20%;">
                                                 &nbsp;<span> 到 </span>&nbsp;
                                                 <input type="text"  value="{pg: if (isset($getdata.end))}{pg:$getdata.end}{pg:else}{pg:$today}{pg:/if}"  name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px; width: 20%;">
-                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&mid=<?php echo $_GET['mid']; ?>" >导出excel</a>
+                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&mid=<?php echo $_SESSION['mid']; ?>" >导出excel</a>
                                             </div>
                                         </div>
                                     </form>
@@ -218,16 +218,17 @@
                                                         <td>{pg:if !empty($wxsum.0.money)}{pg:$wxsum.0.money}{pg:else}0{pg:/if} </td>
                                                         <td>{pg:if !empty($wxsum.0.income)}{pg:$wxsum.0.income}{pg:else}0{pg:/if}</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>支付宝支付</td>
-                                                        <td>{pg:if !empty($alisum.0.money)}{pg:$alisum.0.money}{pg:else}0{pg:/if}</td>
-                                                        <td>{pg:if !empty($alisum.0.income)}{pg:$alisum.0.income}{pg:else}0{pg:/if}</td>
-                                                    </tr>
-                                                     <tr>
-                                                        <td>qq支付</td>
-                                                        <td>{pg:if !empty($qqsum.0.money)}{pg:$qqsum.0.money}{pg:else}0{pg:/if}</td>
-                                                        <td>{pg:if !empty($qqsum.0.income)}{pg:$qqsum.0.income}{pg:else}0{pg:/if}</td>
-                                                    </tr>
+                                                       {pg:if $mtype!=3}<tr>
+                                                            <td>支付宝支付</td>
+                                                            <td>{pg:if !empty($alisum.0.money)}{pg:$alisum.0.money}{pg:else}0{pg:/if}</td>
+                                                            <td>{pg:if !empty($alisum.0.income)}{pg:$alisum.0.income}{pg:else}0{pg:/if}</td>
+                                                        {pg:/if}</tr>
+                                                        
+                                                         {pg:if $mtype==3}<tr>
+                                                            <td>qq支付</td>
+                                                            <td>{pg:if !empty($qqsum.0.money)}{pg:$qqsum.0.money}{pg:else}0{pg:/if}</td>
+                                                            <td>{pg:if !empty($qqsum.0.income)}{pg:$qqsum.0.income}{pg:else}0{pg:/if}</td>
+                                                        {pg:/if}</tr>
                                                 {pg:/if}
                                             </tbody>
                                         </table>
@@ -244,13 +245,13 @@
                                             </div>
                                             <ul class="doughnut-legend">
                                                <li><span style="background-color:#33EA90"></span>微信支付</li>
-	                        		<li><span style="background-color:#00a3d2"></span>支付宝</li>
-	                        		<li><span style="background-color:#00ff33"></span>qq</li>
+	                        		{pg:if $mtype!=3}<li><span style="background-color:#00a3d2"></span>支付宝</li>{pg:/if}
+	                        		{pg:if $mtype==3}<li><span style="background-color:#00ff33"></span>qq</li>{pg:/if}
                                             </ul>
                                         </div>
                                     </div>
 
-                                    <div class="clearfix">
+                                    <div class="clearfix"><input type='text' id='mtype' style='display: none' value={pg:$mtype}>
                                         <table border="1" class="payment1" style="margin: 60px 30px 30px 0px;" width="100%" bordercolor="#e0e0e0">
                                             <tbody>
                                                 <tr>
@@ -272,7 +273,7 @@
                                                     <td>{pg: if $row.refund==2}{pg:$row.goods_price}{pg:/if}</td>
                                                     <td>{pg:$row.income}</td>
                                                     <td>{pg: $row.paytime}</td>
-                                                    <td>{pg:if $row.pay_way == 'weixin'}微信{pg:elseif $row.pay_way == 'alipay'}支付宝{pg:/if}</td>
+                                                    <td>{pg:if $row.pay_way == 'weixin'}微信{pg:elseif $row.pay_way == 'alipay'}支付宝{pg:elseif $row.pay_way == 'qq'}qq{pg:/if}</td>
                                                     <td>{pg:$row.goods_describe}</td>
                                                     <td>{pg:$row.business_name} {pg:$row.branch_name}</td>
                                                     {pg: if $row.refund ==2}
@@ -357,21 +358,39 @@
 
 
         var helpers = Chart.helpers;
-        var doughnutData_m = [
-            {
-                value: {pg: if $getdata.type=='alipay'}{pg: 0 }{pg: else } {pg:if !empty($wxsum.0.money)}{pg:$wxsum.0.money}{pg:else}0{pg:/if} {pg: /if},
-                color: "#33EA90",
-            highlight: "#4BFFA8",
-                label: "微信支付"
-            },
-            {
-                value: {pg: if $getdata.type=='weixin'}{pg: 0 }{pg: else } {pg:if !empty($alisum.0.money)}{pg:$alisum.0.money}{pg:else}0{pg:/if} {pg: /if},
-                color: "#00a3d2",
-            highlight: "#24c7f6",
-                label: "支付宝"
-            },
-        ];
-
+        var mtype=$('#mtype').val();
+        if(mtype!=3){
+                   	 var doughnutData_m = [
+                       {
+                           value: {pg: if $getdata.type=='alipay'}{pg: 0 }{pg: else } {pg:if !empty($wxsum.0.money)}{pg:$wxsum.0.money}{pg:else}0{pg:/if} {pg: /if},
+                           color: "#33EA90",
+                       highlight: "#4BFFA8",
+                           label: "微信支付"
+                       },
+                       {
+                           value: {pg: if $getdata.type=='weixin'}{pg: 0 }{pg: else } {pg:if !empty($alisum.0.money)}{pg:$alisum.0.money}{pg:else}0{pg:/if} {pg: /if},
+                           color: "#00a3d2",
+                       highlight: "#24c7f6",
+                           label: "支付宝"
+                       },
+                   ];
+            }
+        if(mtype==3){
+                    var doughnutData_m = [
+                          {
+                              value: {pg: if $getdata.type=='qq'}{pg: 0 }{pg: else } {pg:if !empty($wxsum.0.money)}{pg:$wxsum.0.money}{pg:else}0{pg:/if} {pg: /if},
+                              color: "#33EA90",
+                          highlight: "#4BFFA8",
+                              label: "微信支付"
+                          },
+                          {
+                              value: {pg: if $getdata.type=='weixin'}{pg: 0 }{pg: else } {pg:if !empty($qqsum.0.money)}{pg:$qqsum.0.money}{pg:else}0{pg:/if} {pg: /if},
+                              color: "#00ff33",
+                          highlight: "#24c7f6",
+                              label: "qq"
+                          },
+                      ];
+        }
         var doughnutOptions = {
             segmentShowStroke: true,
             segmentStrokeColor: "#fff",

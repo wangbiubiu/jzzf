@@ -255,7 +255,7 @@
                                 </div>
                             </div>
 
-                            <div class="clearfix">
+                            <div class="clearfix"><input type='text' id='mtype' style='display: none' value="<?php echo $mtype;?>">
                                 <table border="1" class="payment1" style="margin: 60px 30px 30px 0px;" width="100%" bordercolor="#e0e0e0">
                                     <tbody>
                                     <tr>
@@ -376,20 +376,39 @@
 
 
         var helpers = Chart.helpers;
-        var doughnutData_m = [
-            {
-                value: <?php if($getdata['type']=='alipay'){ echo 0;}else{ echo $weixin;} ?>,
-                color: "#33EA90",
-                highlight: "#4BFFA8",
-                label: "微信支付"
-            },
-            {
-                value: <?php if($getdata['type']=='weixin'){ echo 0;}else{ echo $alipay;} ?>,
-                color: "#00a3d2",
-                highlight: "#24c7f6",
-                label: "支付宝"
-            },
-        ];
+        var mtype=$('#mtype').val();
+        if(mtype!=3){
+                    var doughnutData_m = [
+                        {
+                            value: <?php if($getdata['type']=='alipay'){ echo 0;}else{ echo $weixin;} ?>,
+                            color: "#33EA90",
+                            highlight: "#4BFFA8",
+                            label: "微信支付"
+                        },
+                        {
+                            value: <?php if($getdata['type']=='weixin'){ echo 0;}else{ echo $alipay;} ?>,
+                            color: "#00a3d2",
+                            highlight: "#24c7f6",
+                            label: "支付宝"
+                        },
+                    ];
+        }
+        if(mtype==3){
+                	var doughnutData_m = [
+                    {
+                        value: <?php if($getdata['type']=='qq'){ echo 0;}else{ echo $weixin;} ?>,
+                        color: "#33EA90",
+                        highlight: "#4BFFA8",
+                        label: "微信支付"
+                    },
+                    {
+                        value: <?php if($getdata['type']=='weixin'){ echo 0;}else{ echo $qq;} ?>,
+                        color: "#00ff33",
+                        highlight: "#24c7f6",
+                        label: "qq"
+                    },
+                ];
+        }
 
         var doughnutOptions = {
             segmentShowStroke: true,

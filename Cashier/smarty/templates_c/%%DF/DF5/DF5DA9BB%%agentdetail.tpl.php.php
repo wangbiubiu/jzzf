@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.18, created on 2017-11-01 14:51:21
+<?php /* Smarty version 2.6.18, created on 2017-11-02 12:01:27
          compiled from F:%5Cgit%5Cjzzf%5CCashier%5C./pigcms_tpl/Merchants/System/count/agentdetail.tpl.php */ ?>
 <!DOCTYPE html>
 <html>
@@ -197,7 +197,7 @@ unset($_smarty_tpl_vars);
                                                 <input type="text"  value="<?php if (( isset ( $this->_tpl_vars['getdata']['end'] ) )): ?><?php echo $this->_tpl_vars['getdata']['end']; ?>
 <?php else: ?><?php echo $this->_tpl_vars['today']; ?>
 <?php endif; ?>" name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px;width: 15%; height:30px">
-                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&aid=<?php echo $_GET['aid']; ?>" >导出到excel</a>
+                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&aid=<?php echo $_SESSION['aid']; ?>" >导出到excel</a>
                                             </div>
                                         </div>
                                     </form>
@@ -289,8 +289,8 @@ unset($_smarty_tpl_vars);
                                             </div>
                                             <ul class="doughnut-legend">
                                                <li><span style="background-color:#33EA90"></span>微信支付</li>
-	                        		<li><span style="background-color:#00a3d2"></span>支付宝</li>
-	                        		<li><span style="background-color:#00ff33"></span>qq</li>
+            	                        		<li><span style="background-color:#00a3d2"></span>支付宝</li>
+            	                        		<li><span style="background-color:#00ff33"></span>qq</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -439,6 +439,14 @@ cashier/commonfunc.js"></script>
                 color: "#00a3d2",
             highlight: "#24c7f6",
                 label: "支付宝"
+            },
+            {
+                value: <?php if ($this->_tpl_vars['getdata']['type'] == 'qq'): ?><?php echo 0; ?>
+<?php else: ?><?php echo $this->_tpl_vars['qqsum']; ?>
+<?php endif; ?>,
+                color: "#00ff33",
+            highlight: "#24c7f6",
+                label: "qq"
             },
         ];
 

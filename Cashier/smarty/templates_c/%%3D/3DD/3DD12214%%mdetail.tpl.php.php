@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.18, created on 2017-11-01 10:42:30
+<?php /* Smarty version 2.6.18, created on 2017-11-02 14:58:10
          compiled from F:%5Cgit%5Cjzzf%5CCashier%5C./pigcms_tpl/Merchants/System/count/mdetail.tpl.php */ ?>
 <!DOCTYPE html>
 <html>
@@ -185,8 +185,8 @@ unset($_smarty_tpl_vars);
                                                 <select name="type" style=" width: 120px; height: 30px; margin-bottom: 0px">
                                                     <option value="">全部</option>
                                                     <option value="weixin" <?php if ($this->_tpl_vars['getdata']['type'] == 'weixin'): ?>selected="selected"<?php endif; ?>>微信</option>
-                                                    <option value="alipay" <?php if ($this->_tpl_vars['getdata']['type'] == 'alipay'): ?>selected="selected"<?php endif; ?>>支付宝</option>
-                                                    <option value="qq" <?php if ($this->_tpl_vars['getdata']['type'] == 'qq'): ?>selected="selected"<?php endif; ?>>qq</option>
+                                                    <?php if ($this->_tpl_vars['mtype'] != 3): ?><option value="alipay" <?php if ($this->_tpl_vars['getdata']['type'] == 'alipay'): ?>selected="selected"<?php endif; ?>>支付宝</option><?php endif; ?>
+                                                    <?php if ($this->_tpl_vars['mtype'] == 3): ?><option value="qq" <?php if ($this->_tpl_vars['getdata']['type'] == 'qq'): ?>selected="selected"<?php endif; ?>>qq</option><?php endif; ?>
                                                 </select>
                                                 <label class="font-noraml">选择日期</label>&nbsp;&nbsp;&nbsp;
                                                 <input type="text"  value="<?php if (( isset ( $this->_tpl_vars['getdata']['start'] ) )): ?><?php echo $this->_tpl_vars['getdata']['start']; ?>
@@ -196,7 +196,7 @@ unset($_smarty_tpl_vars);
                                                 <input type="text"  value="<?php if (( isset ( $this->_tpl_vars['getdata']['end'] ) )): ?><?php echo $this->_tpl_vars['getdata']['end']; ?>
 <?php else: ?><?php echo $this->_tpl_vars['today']; ?>
 <?php endif; ?>"  name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px; width: 20%;">
-                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&mid=<?php echo $_GET['mid']; ?>" >导出excel</a>
+                                                &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=count&a=data2ExcelDetail&mid=<?php echo $_SESSION['mid']; ?>" >导出excel</a>
                                             </div>
                                         </div>
                                     </form>
@@ -257,20 +257,21 @@ unset($_smarty_tpl_vars);
                                                         <td><?php if (! empty ( $this->_tpl_vars['wxsum']['0']['income'] )): ?><?php echo $this->_tpl_vars['wxsum']['0']['income']; ?>
 <?php else: ?>0<?php endif; ?></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>支付宝支付</td>
-                                                        <td><?php if (! empty ( $this->_tpl_vars['alisum']['0']['money'] )): ?><?php echo $this->_tpl_vars['alisum']['0']['money']; ?>
+                                                       <?php if ($this->_tpl_vars['mtype'] != 3): ?><tr>
+                                                            <td>支付宝支付</td>
+                                                            <td><?php if (! empty ( $this->_tpl_vars['alisum']['0']['money'] )): ?><?php echo $this->_tpl_vars['alisum']['0']['money']; ?>
 <?php else: ?>0<?php endif; ?></td>
-                                                        <td><?php if (! empty ( $this->_tpl_vars['alisum']['0']['income'] )): ?><?php echo $this->_tpl_vars['alisum']['0']['income']; ?>
+                                                            <td><?php if (! empty ( $this->_tpl_vars['alisum']['0']['income'] )): ?><?php echo $this->_tpl_vars['alisum']['0']['income']; ?>
 <?php else: ?>0<?php endif; ?></td>
-                                                    </tr>
-                                                     <tr>
-                                                        <td>qq支付</td>
-                                                        <td><?php if (! empty ( $this->_tpl_vars['qqsum']['0']['money'] )): ?><?php echo $this->_tpl_vars['qqsum']['0']['money']; ?>
+                                                        <?php endif; ?></tr>
+                                                        
+                                                         <?php if ($this->_tpl_vars['mtype'] == 3): ?><tr>
+                                                            <td>qq支付</td>
+                                                            <td><?php if (! empty ( $this->_tpl_vars['qqsum']['0']['money'] )): ?><?php echo $this->_tpl_vars['qqsum']['0']['money']; ?>
 <?php else: ?>0<?php endif; ?></td>
-                                                        <td><?php if (! empty ( $this->_tpl_vars['qqsum']['0']['income'] )): ?><?php echo $this->_tpl_vars['qqsum']['0']['income']; ?>
+                                                            <td><?php if (! empty ( $this->_tpl_vars['qqsum']['0']['income'] )): ?><?php echo $this->_tpl_vars['qqsum']['0']['income']; ?>
 <?php else: ?>0<?php endif; ?></td>
-                                                    </tr>
+                                                        <?php endif; ?></tr>
                                                 <?php endif; ?>
                                             </tbody>
                                         </table>
@@ -287,13 +288,14 @@ unset($_smarty_tpl_vars);
                                             </div>
                                             <ul class="doughnut-legend">
                                                <li><span style="background-color:#33EA90"></span>微信支付</li>
-	                        		<li><span style="background-color:#00a3d2"></span>支付宝</li>
-	                        		<li><span style="background-color:#00ff33"></span>qq</li>
+	                        		<?php if ($this->_tpl_vars['mtype'] != 3): ?><li><span style="background-color:#00a3d2"></span>支付宝</li><?php endif; ?>
+	                        		<?php if ($this->_tpl_vars['mtype'] == 3): ?><li><span style="background-color:#00ff33"></span>qq</li><?php endif; ?>
                                             </ul>
                                         </div>
                                     </div>
 
-                                    <div class="clearfix">
+                                    <div class="clearfix"><input type='text' id='mtype' style='display: none' value=<?php echo $this->_tpl_vars['mtype']; ?>
+>
                                         <table border="1" class="payment1" style="margin: 60px 30px 30px 0px;" width="100%" bordercolor="#e0e0e0">
                                             <tbody>
                                                 <tr>
@@ -322,7 +324,7 @@ unset($_smarty_tpl_vars);
 </td>
                                                     <td><?php echo $this->_tpl_vars['row']['paytime']; ?>
 </td>
-                                                    <td><?php if ($this->_tpl_vars['row']['pay_way'] == 'weixin'): ?>微信<?php elseif ($this->_tpl_vars['row']['pay_way'] == 'alipay'): ?>支付宝<?php endif; ?></td>
+                                                    <td><?php if ($this->_tpl_vars['row']['pay_way'] == 'weixin'): ?>微信<?php elseif ($this->_tpl_vars['row']['pay_way'] == 'alipay'): ?>支付宝<?php elseif ($this->_tpl_vars['row']['pay_way'] == 'qq'): ?>qq<?php endif; ?></td>
                                                     <td><?php echo $this->_tpl_vars['row']['goods_describe']; ?>
 </td>
                                                     <td><?php echo $this->_tpl_vars['row']['business_name']; ?>
@@ -418,25 +420,47 @@ cashier/commonfunc.js"></script>
 
 
         var helpers = Chart.helpers;
-        var doughnutData_m = [
-            {
-                value: <?php if ($this->_tpl_vars['getdata']['type'] == 'alipay'): ?><?php echo 0; ?>
+        var mtype=$('#mtype').val();
+        if(mtype!=3){
+                   	 var doughnutData_m = [
+                       {
+                           value: <?php if ($this->_tpl_vars['getdata']['type'] == 'alipay'): ?><?php echo 0; ?>
 <?php else: ?> <?php if (! empty ( $this->_tpl_vars['wxsum']['0']['money'] )): ?><?php echo $this->_tpl_vars['wxsum']['0']['money']; ?>
 <?php else: ?>0<?php endif; ?> <?php endif; ?>,
-                color: "#33EA90",
-            highlight: "#4BFFA8",
-                label: "微信支付"
-            },
-            {
-                value: <?php if ($this->_tpl_vars['getdata']['type'] == 'weixin'): ?><?php echo 0; ?>
+                           color: "#33EA90",
+                       highlight: "#4BFFA8",
+                           label: "微信支付"
+                       },
+                       {
+                           value: <?php if ($this->_tpl_vars['getdata']['type'] == 'weixin'): ?><?php echo 0; ?>
 <?php else: ?> <?php if (! empty ( $this->_tpl_vars['alisum']['0']['money'] )): ?><?php echo $this->_tpl_vars['alisum']['0']['money']; ?>
 <?php else: ?>0<?php endif; ?> <?php endif; ?>,
-                color: "#00a3d2",
-            highlight: "#24c7f6",
-                label: "支付宝"
-            },
-        ];
-
+                           color: "#00a3d2",
+                       highlight: "#24c7f6",
+                           label: "支付宝"
+                       },
+                   ];
+            }
+        if(mtype==3){
+                    var doughnutData_m = [
+                          {
+                              value: <?php if ($this->_tpl_vars['getdata']['type'] == 'qq'): ?><?php echo 0; ?>
+<?php else: ?> <?php if (! empty ( $this->_tpl_vars['wxsum']['0']['money'] )): ?><?php echo $this->_tpl_vars['wxsum']['0']['money']; ?>
+<?php else: ?>0<?php endif; ?> <?php endif; ?>,
+                              color: "#33EA90",
+                          highlight: "#4BFFA8",
+                              label: "微信支付"
+                          },
+                          {
+                              value: <?php if ($this->_tpl_vars['getdata']['type'] == 'weixin'): ?><?php echo 0; ?>
+<?php else: ?> <?php if (! empty ( $this->_tpl_vars['qqsum']['0']['money'] )): ?><?php echo $this->_tpl_vars['qqsum']['0']['money']; ?>
+<?php else: ?>0<?php endif; ?> <?php endif; ?>,
+                              color: "#00ff33",
+                          highlight: "#24c7f6",
+                              label: "qq"
+                          },
+                      ];
+        }
         var doughnutOptions = {
             segmentShowStroke: true,
             segmentStrokeColor: "#fff",

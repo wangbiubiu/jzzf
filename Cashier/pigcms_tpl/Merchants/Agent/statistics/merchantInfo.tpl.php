@@ -170,7 +170,8 @@
                                 <select name="pay_way" style="width: 120px; height: 30px; margin-bottom: 0px">
                                     <option value="0">全部</option>
                                     <option value="weixin" <?php if ($getdata['pay_way']=='weixin'){ echo 'selected';}?>>微信</option>
-                                    <option value="alipay"  <?php if ($getdata['pay_way']=='alipay'){ echo 'selected';}?>>支付宝</option>
+                                    <?php if($mtype==3){?><option value="qq" <?php if ($getdata['pay_way']=='qq'){ echo 'selected';}?>>qq</option><?php }?>
+                                    <?php if($mtype!=3){?><option value="alipay"  <?php if ($getdata['pay_way']=='alipay'){ echo 'selected';}?>>支付宝</option><?php }?>
                                 </select>
 
 
@@ -205,20 +206,33 @@
                                                 </td>
                                 			</tr>
 
-                                            <?php if ($getdata['pay_way']!='alipay') { ?>
+                                            <?php if ($getdata['pay_way']!='alipay'&&$getdata['pay_way']!='qq') { ?>
                                 			<tr>
                                 				<td>微信支付</td>
                                 				<td><?php if($stc['weixin']['total']){echo $stc['weixin']['total'];}else{echo 0;}?></td>
                                 				<td><?php if($stc['weixin']['income']){echo $stc['weixin']['income'];}else{echo 0;}?></td>
                                 			</tr>
                                             <?php } ?>
-                                            <?php if ($getdata['pay_way']!='weixin') { ?>
-                                			<tr>
-                                				<td>支付宝城市</td>
-                                				<td><?php if($stc['alipay']['total']){echo $stc['alipay']['total'];}else{echo 0;}?></td>
-                                				<td><?php if($stc['alipay']['income']){echo $stc['alipay']['income'];}else{echo 0;}?></td>
-                                			</tr>
-                                            <?php } ?>
+                                            
+                                            <?php if($mtype!=3){?>
+                                                <?php if ($getdata['pay_way']!='weixin'&&$getdata['pay_way']!='qq') { ?>
+                                    			<tr>
+                                    				<td>支付宝</td>
+                                    				<td><?php if($stc['alipay']['total']){echo $stc['alipay']['total'];}else{echo 0;}?></td>
+                                    				<td><?php if($stc['alipay']['income']){echo $stc['alipay']['income'];}else{echo 0;}?></td>
+                                    			</tr>
+                                    			<?php }?>
+                                			<?php }?>
+                                			<?php if($mtype==3){?>
+                                               <?php if ($getdata['pay_way']!='alipay'&&$getdata['pay_way']!='weixin') { ?>
+                                    			<tr>
+                                    				<td>qq</td>
+                                    				<td><?php if($stc['qq']['total']){echo $stc['qq']['total'];}else{echo 0;}?></td>
+                                    				<td><?php if($stc['qq']['income']){echo $stc['qq']['income'];}else{echo 0;}?></td>
+                                    			</tr>
+                                                <?php } ?>
+                                            <?php }?>
+                                                
                                 		</tbody>
                                 	</table>
                             <div class="shanxin clearfix " style="position: absolute;right: 0px; margin-top:0px; top: 28px; height: 210px">
@@ -228,7 +242,8 @@
 	                            </div>
                                 <ul class="doughnut-legend">
 	                        		<li><span style="background-color:#33EA90"></span>微信支付</li>
-                                    <li><span style="background-color:#00a3d2"></span>支付宝城市</li>
+                                    <?php if($mtype!=3){?><li><span style="background-color:#00a3d2"></span>支付宝</li><?php }?>
+                                    <?php if($mtype==3){?><li><span style="background-color:#00ff33"></span>qq</li><?php }?>
 	                        	</ul>
                         	</div>
                              </div>

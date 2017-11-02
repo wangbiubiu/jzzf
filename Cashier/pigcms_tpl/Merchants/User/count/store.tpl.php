@@ -153,20 +153,24 @@
 	                				<td><?php echo  $v['business_name']."&nbsp;".$v['branch_name'] ?></td>
 	                				<td>
 	                					<p>微信支付</p>
-	                					<p>支付宝城市</p>
+	                					<?php if($mtype!=3){?><p>支付宝</p><?php }?>
+	                					<?php if($mtype==3){?><p>qq</p><?php }?>
 	                				</td>
 	                				<td>
 	                					<p><?php echo  $v['wxtotal_price'] ?></p>
-	                					<p><?php echo  $v['alitotal_price'] ?></p>
+	                					<?php if($mtype!=3){?><p><?php echo  $v['alitotal_price'] ?></p><?php }?>
+	                					<?php if($mtype==3){?><p><?php echo  $v['qqtotal_price'] ?></p><?php }?>
 	                				</td>
 	                				<td>
 	                					<p><?php echo  $v['wxcount'] ?></p>
-	                					<p><?php echo  $v['alicount'] ?></p>
+	                					<?php if($mtype!=3){?><p><?php echo  $v['alicount'] ?></p><?php }?>
+	                					<?php if($mtype==3){?><p><?php echo  $v['qqtotal_price'] ?></p><?php }?>
 	                				</td>
 	                				
 	                				<td>
 	                					<p><?php echo  $v['wxincome'] ?></p>
-	                					<p><?php echo  $v['aliincome'] ?></p>
+	                					<?php if($mtype!=3){?><p><?php echo  $v['aliincome'] ?></p><?php }?>
+	                					<?php if($mtype==3){?><p><?php echo  $v['qqtotal_price'] ?></p><?php }?>
 	                				</td>
                                                         <td><a href="/merchants.php?m=User&c=count&a=storesdetail&id=<?php echo $v['id']?>"><button style="color:#ffffff">查看</button></a></td>
 	                			</tr>
