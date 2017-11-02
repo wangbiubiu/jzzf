@@ -11,7 +11,7 @@ define('APP_NAME','Merchants');
 define('DEBUG',true);
 define('GZIP',true);
 $_GET['m'] = 'Pay';
-$_GET['c'] = 'jhzpay';
+$_GET['c'] = 'jpay';
 $_GET['a'] = 'success';
 $data = $_POST?:$_GET;
 file_put_contents('./jhz.txt',var_export($_POST,true));

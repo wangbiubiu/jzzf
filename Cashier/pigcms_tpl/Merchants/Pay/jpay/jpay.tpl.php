@@ -84,14 +84,8 @@
     setTimeout(function () {
         var myVar = window.setInterval(function(){$.post("http://b.jizhipay.com/merchants.php?m=Pay&c=jpay&a=order",{order_id:"<?php echo $data['order_id'];?>"},function (data) {
             if(data=="success"){
-                console.log(data);
                 clearInterval(myVar);
                 window.history.go(-1);
-            }else{
-                console.log(data);
-                //clearInterval(myVar);window.history.back(-1);
-                setTimeout(function () {window.history.go(-1);},60000);
-                //setTimeout(function () {window.location.href="http://www.baidu.com";},40000);
             }
         });},1500);
     },6000);

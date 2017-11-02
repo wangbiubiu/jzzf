@@ -15,7 +15,8 @@ class jhzpay_controller extends base_controller
      * $pay_type      微信或者QQ配置
      * */
     //金海哲支付方法
-    private function jhzpay($amount,$paymethod,$remark,$order_id,$payinfo,$pay_type){
+    private function jhzpay($rows){
+
         error_reporting(E_ALL^E_NOTICE^E_WARNING);
         header("Content-Type: text/html; charset=utf8");
         $jhz = loadConfig('jhz');
@@ -27,15 +28,17 @@ class jhzpay_controller extends base_controller
 // 请求数据赋值
         $data = "";
         $data['merchantNo'] = $jhz['merchantNo']; //商户号
-        $data['requestNo'] =  $order_id; //支付流水
-        $data['amount'] = $amount;//金额（分）
-        $data['payMethod'] = $paymethod;//业务编号
-        $data['backUrl'] =  $jhz['backUrl'];   //页面返回URL
+        $data['requestNo'] =  $rows['orderid']; //支付流水
+        $data['amount'] = $rows['goods_price'];//金额（分）
+        $data['payMethod'] = $rows['payinfo']['code'];//业务编号
+        $data['backUrl'] =  $rows['backurl'];   //页面返回URL
         $data['pageUrl'] = $jhz['pageUrl'];   //服务器返回URL
         $data['payDate'] = time();   //支付时间，必须为时间戳
-        $data['remark1'] = $remark;
+        $data['remark1'] = $rows['backurl'];
         $data['remark2'] ='2';
         $data['remark3'] = '3';
+
+
         $signature=$data['merchantNo']."|".$data['requestNo']."|".$data['amount']."|".$data['pageUrl']."|".$data['backUrl']."|".$data['payDate']."|".$data['agencyCode']."|".$data['remark1']."|".$data['remark2']."|".$data['remark3'];
 ////////////////////////
         $pr_key ='';
@@ -78,16 +81,16 @@ class jhzpay_controller extends base_controller
         $php_json = json_encode($response);
 //调用添加订单后续方法
         $info = array(
-            "qrcode_id"=>$payinfo['qrcode_id'],
-            "mid"=>$payinfo['mid'],
-            "storesid"=>$payinfo['storesid'],
-            "eid"=>$payinfo['eid'],
-            "goods_price"=>$payinfo['goods_price'],
-            "order_id"=>$order_id,
-            "pay_way"=>$pay_type['pay_way'],
-            "pay_type"=>$pay_type['pay_type'],
-            "goods_describe"=>$pay_type['goods_describe'],
-            "code"=>$pay_type['code']
+            "qrcode_id"=>$rows['ewmid'],
+            "mid"=>$rows['mid'],
+            "storesid"=>$rows['storesid'],
+            "eid"=>$rows['eid'],
+            "goods_price"=>$rows['goods_price'],
+            "order_id"=>$rows['orderid'],
+            "pay_way"=>$rows['payinfo']['pay_way'],
+            "pay_type"=>$rows['payinfo']['pay_type'],
+            "goods_describe"=>$rows['payinfo']['goods_describe'],
+            "code"=>$rows['payinfo']['code']
         );
         $this->Response($response,$info);
 
@@ -104,13 +107,12 @@ class jhzpay_controller extends base_controller
     //金海哲支
     public function jpay()
     {
-
         if (empty($_POST['ewmid'])){
             echo json_encode(array("msg"=>"ewmid为空！","code"=>"4000"));
 //            echo"<script>alert('ewmid为空');history.go(-1);</script>";
             exit();
         }
-        if(empty($_POST['goods_price']) or $_POST['goods_price'] < 0.01){
+        if(empty($_POST['goods_price']) or intval($_POST['goods_price']) < 1){
             echo json_encode(array("msg"=>"交易最小金额为0.01！","code"=>"4001"));
 //            echo"<script>alert('交易最小金额为0.01！');history.go(-1);</script>";
             exit();
@@ -120,27 +122,23 @@ class jhzpay_controller extends base_controller
 //            echo"<script>alert('业务编号为空！');history.go(-1);</script>";
             exit();
         }
-        $rows = M('cashier_qrcode')->get_one("qrcode_id='" . $_POST['ewmid'] . "'");
+        $rows = M('cashier_qrcode')->get_one(array("qrcode_id"=>$_POST['ewmid']),"mid,eid,storesid");
         if ($rows['mid'] && $rows['eid'] && $rows['storesid']) {
-
             $rows['goods_price'] = $_POST['goods_price'];
-            $rows['openid'] = $_POST['openid'];
-
-            $payinfo = $this->payinfo($_POST['paymethod']);
-            if($payinfo == false){
+            $rows['ewmid'] = $_POST['ewmid'];
+            $rows['backurl'] = empty($_POST['backurl']) ? "www.baidu.com" : $_POST['backurl'];
+            $rows['orderid'] = '33' . date('YmdHis') . mt_rand(11111111, 99999999) . substr(SYS_TIME, 2);
+            $rows['payinfo'] = $this->payinfo($_POST['paymethod']);
+            if($rows['payinfo'] == false){
                 echo json_encode(array("msg"=>"业务编号错误！","code"=>"4004"));
 //                echo"<script>alert('业务编号错误！');history.go(-1);</script>";
                 exit();
             }else{
-
-                $backurl = empty($_POST['backurl']) ? "www.baidu.com" : $_POST['backurl'];
-                $info['goods_price'] = $rows['goods_price']*100;
-                $orderid = '22' . date('YmdHis') . mt_rand(11111111, 99999999) . substr(SYS_TIME, 2);
-                $this->jhzpay($info['goods_price'],$_POST['paymethod'],$backurl,$orderid,$rows,$payinfo);
+                $this->jhzpay($rows);
             }
         } else {
-//            echo json_encode(array("msg"=>"ewmid不存在！","code"=>"4003"));
-            echo"<script>alert('ewmid不存在！');history.go(-1);</script>";
+            echo json_encode(array("msg"=>"ewmid不存在！","code"=>"4003"));
+//            echo"<script>alert('ewmid不存在！');history.go(-1);</script>";
             exit();
         }
 
@@ -156,6 +154,7 @@ class jhzpay_controller extends base_controller
         //添加订单
         $list['backOrderId'] = $info['backOrderId'];
         $list['sign'] = $info['sign'];
+        $list['goods_price'] = $list['goods_price'] / 100;
         $orderinfo = $this->add_order($list);
         if(!empty($orderinfo) && !empty($info['backQrCodeUrl']) && !empty($info['backOrderId'])){
             echo json_encode(array("msg"=>array("code"=>"2000","msg"=>"success"),"data"=>array("orderid"=>$list['order_id'],"url"=>$info['backQrCodeUrl'],"ewmid"=>$list['qrcode_id'])));
