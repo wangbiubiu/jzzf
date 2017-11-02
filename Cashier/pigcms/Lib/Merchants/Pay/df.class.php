@@ -77,12 +77,12 @@ class df_controller extends base_controller{
 
         $res=json_decode($response,TRUE);
         //        var_dump($res);exit;
-        //        $res= array( "cipher_data"=>
-        //                         "BJp1UDMR0QU%2FsJ1%2FP5F7SsD%2FEib4X24Yi9Rd3bXwRlhnh3TzLcO9x0CZmgVDO6DWXaX9UHEYIHIAC5Efh%2BfzpvqMfMxwovBs6QcJTQsSjz2iQKDTYO5pYUfMjAjC97IbLl3SfPbd7mu%2FnS%2FOrhvgorM0W%2Fy1aukYRreQrb5Hy8MCbcEC29bGyI%2BzUVyF9gFXxhLfzgssdAURn4MPTITqlx%2BaGt59X0lC5%2FEMXD%2FBeKQy7mSlTJO1mr5PrCWysDuaP0jj5CRGwMofWl2425TJGrPPl1oyAnz7WhOGhqjlQerVWHvkqzVHNq%2FWXuweWFaFlibiRPTVjvP3%2FQc4gXH%2Fey6fSNH8hHqxxx%2BXHrM%2B2EtvGa%2B1j0cfv5rk8uvtRzyc%2BGBdWN%2B%2BhlilwSGiY%2BEXdZI5GQ5Njoe8hUeq2bzxnLivvDno4uMAR7PrN%2BHtJjCdH6VzRgUX%2BuZn9ROdXRiI%2BtPN0pypF%2FJMv3wefnyWAG0Beb6AOYSz2xJfhpkOpAiW",
-        //                     "retCode"=>
-        //                         "12000",
-        //                     "retMsg"=>
-        //                         "请求代付成功");
+                $res= array( "cipher_data"=>
+                                 "BJp1UDMR0QU%2FsJ1%2FP5F7SsD%2FEib4X24Yi9Rd3bXwRlhnh3TzLcO9x0CZmgVDO6DWXaX9UHEYIHIAC5Efh%2BfzpvqMfMxwovBs6QcJTQsSjz2iQKDTYO5pYUfMjAjC97IbLl3SfPbd7mu%2FnS%2FOrhvgorM0W%2Fy1aukYRreQrb5Hy8MCbcEC29bGyI%2BzUVyF9gFXxhLfzgssdAURn4MPTITqlx%2BaGt59X0lC5%2FEMXD%2FBeKQy7mSlTJO1mr5PrCWysDuaP0jj5CRGwMofWl2425TJGrPPl1oyAnz7WhOGhqjlQerVWHvkqzVHNq%2FWXuweWFaFlibiRPTVjvP3%2FQc4gXH%2Fey6fSNH8hHqxxx%2BXHrM%2B2EtvGa%2B1j0cfv5rk8uvtRzyc%2BGBdWN%2B%2BhlilwSGiY%2BEXdZI5GQ5Njoe8hUeq2bzxnLivvDno4uMAR7PrN%2BHtJjCdH6VzRgUX%2BuZn9ROdXRiI%2BtPN0pypF%2FJMv3wefnyWAG0Beb6AOYSz2xJfhpkOpAiW",
+                             "retCode"=>
+                                 "12000",
+                             "retMsg"=>
+                                 "请求代付成功");
         //        插入表格数据
         $info = array(
             "mid"=>$rows['mid'],
@@ -101,8 +101,8 @@ class df_controller extends base_controller{
 
 
         //        把返回的参数与需要添加的数据传入该方法
-        if($res['retCode']==12000){
-            $this->response($res,$info,$balance,$rows['amount']);
+        if($res['retCode']==12000 or $res['retMsg']=="请求代付成功"){
+            $this->response($astrict,$info,$balance,$rows['amount']);
         }else{
             echo $this->msg($res['retCode']);
             exit();
@@ -155,8 +155,9 @@ class df_controller extends base_controller{
         $this->addanother($info);
 
         if($info['status'] == 2){
-            $astrict['count']=$astrict['count']+1;
-            $astrict['balance_count']=$astrict['balance_count']+$money;
+
+            $upmoney['count']=$astrict['count']+1;
+            $upmoney['balance_count']=$astrict['balance_count']+$money;
             $upmoney['balance']=$balance-($info['money']+3);
             $upmoney['mid']=$info['mid'];
             $otherinfo =$this->updateastrict($upmoney);

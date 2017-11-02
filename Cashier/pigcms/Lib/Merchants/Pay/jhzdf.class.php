@@ -101,8 +101,8 @@ class jhzdf_controller extends base_controller{
 
 
         //        把返回的参数与需要添加的数据传入该方法
-        if($res['retCode']==12000){
-            $this->response($res,$info,$balance,$rows['amount']);
+        if($res['retCode']==12000 or $res['retMsg']=="请求代付成功"){
+            $this->response($astrict,$info,$balance,$rows['amount']);
 
         }else{
             $alert=$this->msg($res['retCode']);
@@ -158,8 +158,8 @@ class jhzdf_controller extends base_controller{
         $this->addanother($info);
 
         if($info['status'] == 2){
-            $astrict['count']=$astrict['count']+1;
-            $astrict['balance_count']=$astrict['balance_count']+$money;
+            $upmoney['count']=$astrict['count']+1;
+            $upmoney['balance_count']=$astrict['balance_count']+$money;
             $upmoney['balance']=$balance-($info['money']+3);
             $upmoney['mid']=$info['mid'];
             $otherinfo =$this->updateastrict($upmoney);
