@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.18, created on 2017-11-01 15:06:14
+<?php /* Smarty version 2.6.18, created on 2017-11-03 09:59:11
          compiled from F:%5Cgit%5Cjzzf%5CCashier%5C./pigcms_tpl/Merchants/System/public/leftmenu.tpl.php */ ?>
 <nav role="navigation" class="navbar-default navbar-static-side">
     <div class="sidebar-collapse">
@@ -52,6 +52,7 @@
                     <li <?php if (ROUTE_CONTROL == 'settlement' && ROUTE_ACTION == 'abank'): ?> class="active" <?php endif; ?>><a href="/merchants.php?m=System&c=settlement&a=abank">代理银行卡</a></li>
                     <li <?php if (ROUTE_CONTROL == 'settlement' && ROUTE_ACTION == 'mbank'): ?> class="active" <?php endif; ?>><a href="/merchants.php?m=System&c=settlement&a=mbank">商家银行卡</a></li>
                     <li <?php if (ROUTE_CONTROL == 'settlement' && ROUTE_ACTION == 'cash'): ?> class="active" <?php endif; ?>><a href="/merchants.php?m=System&c=settlement&a=cash">平台提现</a></li>
+                    <li <?php if (ROUTE_CONTROL == 'settlement' && ROUTE_ACTION == 'cashapply'): ?> class="active" <?php endif; ?>><a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success">金海哲提现记录</a></li>
                 </ul>
             </li>
             
@@ -66,8 +67,8 @@
                 </ul>
             </li>-->
             <li <?php if (ROUTE_CONTROL == 'qrcode'): ?> class="active" <?php endif; ?>>
-                <!--<a href="/merchants.php?m=System&c=qrcode&a=index"><i class="fa fa-home"></i> <span class="nav-label">下载二维码</span><span class="label label-info pull-right">NEW</span></a>-->
-                <a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success"><i class="fa fa-home"></i> <span class="nav-label">金海哲提现记录</span>
+                <a href="/merchants.php?m=System&c=qrcode&a=index"><i class="fa fa-home"></i> <span class="nav-label">下载二维码</span><span class="label label-info pull-right">NEW</span></a>
+                
             </li>
             
             

@@ -49,6 +49,7 @@
                     <li {pg:if ROUTE_CONTROL eq 'settlement' && ROUTE_ACTION=='abank'} class="active" {pg:/if}><a href="/merchants.php?m=System&c=settlement&a=abank">代理银行卡</a></li>
                     <li {pg:if ROUTE_CONTROL eq 'settlement' && ROUTE_ACTION=='mbank'} class="active" {pg:/if}><a href="/merchants.php?m=System&c=settlement&a=mbank">商家银行卡</a></li>
                     <li {pg:if ROUTE_CONTROL eq 'settlement' && ROUTE_ACTION=='cash'} class="active" {pg:/if}><a href="/merchants.php?m=System&c=settlement&a=cash">平台提现</a></li>
+                    <li {pg:if ROUTE_CONTROL eq 'settlement' && ROUTE_ACTION=='cashapply'} class="active" {pg:/if}><a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success">金海哲提现记录</a></li>
                 </ul>
             </li>
             
@@ -63,8 +64,8 @@
                 </ul>
             </li>-->
             <li {pg:if ROUTE_CONTROL eq 'qrcode' } class="active" {pg:/if}>
-                <!--<a href="/merchants.php?m=System&c=qrcode&a=index"><i class="fa fa-home"></i> <span class="nav-label">下载二维码</span><span class="label label-info pull-right">NEW</span></a>-->
-                <a href="/merchants.php?m=System&c=settlement&a=cashapply&action=success"><i class="fa fa-home"></i> <span class="nav-label">金海哲提现记录</span>
+                <a href="/merchants.php?m=System&c=qrcode&a=index"><i class="fa fa-home"></i> <span class="nav-label">下载二维码</span><span class="label label-info pull-right">NEW</span></a>
+                
             </li>
             
             

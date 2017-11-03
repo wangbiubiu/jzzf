@@ -425,8 +425,10 @@ class statistics_controller extends common_controller
 			
 			if ($v['pay_way']=='weixin'){
 				$data[$key]['pay_way'] = '微信支付';
-			}else{
-				$data[$key]['pay_way'] = '支付宝城市';
+			}else if($v['pay_way']=='alipay'){
+				$data[$key]['pay_way'] = '支付宝';
+			}else if($v['pay_way']=='qq'){
+				$data[$key]['pay_way'] = 'qq';
 			}
 			
 			

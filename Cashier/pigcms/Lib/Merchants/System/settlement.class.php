@@ -905,28 +905,35 @@ ETC;
 
 
     //鐢宠鎻愮幇璁板綍
-    public function cashapply(){
+    public function cashapply(){var_dump($_GET);
         if($_GET['action']=='success')
         {
             $getdata = $this->clear_html($_GET);
-            $where = " status='2'";
+            $where = " a.status='2'";
             if ($getdata['name']) {
-                $where .= " AND username like '%" . $getdata['name'] . "%'";
+                $where .= " AND b.username like '%" . $getdata['name'] . "%'";
             }
             $start = ((isset($getdata['start']) ? strtotime($getdata['start']." 00:00:00") :0));
             $end = ((isset($getdata['end']) ? strtotime($getdata['end']." 23:59:59") : 0));
     
             if (0 < $start) {
-                $where .= ' AND addtime>=' . $start;
+                $where .= ' AND a.addtime>=' . $start;
             }
             if (0 < $end) {
-                $where .= ' AND addtime<=' . $end;
+                $where .= ' AND a.addtime<=' . $end;
             }
+            
             bpBase::loadOrg('common_page');
-            $_count = M('cashier_msettlement')->count($where);
+            $_count = M('cashier_another')->count('status=2');
             $p = new Page($_count, 15);
+            $where = "select a.*,b.company as mname from cqcjcm_cashier_another as a left join cqcjcm_cashier_merchants as b on a.mid=b.mid where".$where;
+            $rows = M('cashier_another')->selectBySql($where);
             $pagebar = $p->show(2);
-            $rows = M('cashier_another')->select($where, '*', "$p->firstRow,$p->listRows",'addtime desc');
+//             $rows = M('cashier_another a')->selectBySql($where);
+//             foreach ($rows as $k => &$v){
+//                 $tmpmid=M('cashier_merchants')->get_one(array('mid'=>$v['mid']));
+//                 $v['mname']=$tmpmid['company'];
+//             }
                  $sum_money=0;
                 	foreach ($rows as $v) {
                         $sum_money+=$v['money'];

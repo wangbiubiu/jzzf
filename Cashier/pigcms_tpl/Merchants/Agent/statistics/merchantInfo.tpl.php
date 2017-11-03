@@ -187,7 +187,7 @@
                                 	时间：2016-10-18
                                 	描述：统计
                                 -->
-                                <div class="clearfix" style=" position: relative; height: 240px">
+                                <div class="clearfix" style=" position: relative; height: 240px"><input type='text' style='display: none' value="<?php echo $mtype;?>" id='mtype'>
                                 	<table border="1" class="payment" style="margin: 30px 30px 30px 0px;" width="60%" bordercolor="#e0e0e0">
                                 		<tbody>
                                 			<tr>
@@ -251,7 +251,7 @@
 
                                
                             <div class="clearfix">
-<table border="1" class="payment1" style="margin: 30px 30px 30px 0px;" width="100%" bordercolor="#e0e0e0">
+            <table border="1" class="payment1" style="margin: 30px 30px 30px 0px;" width="100%" bordercolor="#e0e0e0">
                                 		<tbody
                                 			<tr>
                                 				<th>交易单号</th>
@@ -383,21 +383,42 @@ $("#side-menu li").click(function () {
             
             
            var helpers = Chart.helpers;
-    var doughnutData_m = [
-        {
-            value: <?php if (isset( $stc['weixin']['total'])){echo $stc['weixin']['total'];}else{ echo 0;}?>,
-             color: "#33EA90",
-            highlight: "#4BFFA8",
-            label: "微信支付"
-        },
-        {
+           var mtype=$('#mtype').val();
+           if(mtype!=3){
+                var doughnutData_m = [
+                    {
+                        value: <?php if (isset( $stc['weixin']['total'])){echo $stc['weixin']['total'];}else{ echo 0;}?>,
+                         color: "#33EA90",
+                        highlight: "#4BFFA8",
+                        label: "微信支付"
+                    },
+                    {
+            
+                        value: <?php if (isset( $stc['alipay']['total'])){echo $stc['alipay']['total'];}else{ echo 0;}?>,
+                        color: "#00a3d2",
+                        highlight: "#24c7f6",
+                        label: "支付宝"
+                    },
+                ];
+           }
+           if(mtype==3){
+            	   var doughnutData_m = [
+                     {
+                         value: <?php if (isset( $stc['weixin']['total'])){echo $stc['weixin']['total'];}else{ echo 0;}?>,
+                          color: "#33EA90",
+                         highlight: "#4BFFA8",
+                         label: "微信支付"
+                     },
+                     {
+    
+                         value: <?php if (isset( $stc['qq']['total'])){echo $stc['qq']['total'];}else{ echo 0;}?>,
+                         color: "#00ff33",
+                         highlight: "#24c7f6",
+                         label: "qq"
+                     },
+                 ];
 
-            value: <?php if (isset( $stc['alipay']['total'])){echo $stc['alipay']['total'];}else{ echo 0;}?>,
-            color: "#00a3d2",
-            highlight: "#24c7f6",
-            label: "支付宝城市"
-        },
-    ];
+               }
 // 
 
     var doughnutOptions = {

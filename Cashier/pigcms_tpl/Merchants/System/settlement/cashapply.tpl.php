@@ -153,26 +153,7 @@
                                         描述：待划账
                                 -->
                                 <div class="ibox-content yc" style="border-top:none">
-                                  <form action="/merchants.php?m=System&c=settlement&a=mset" method="get">
-                                    <input type="hidden" value="System" name="m" >
-                                    <input type="hidden" value="settlement" name="c" >
-                                    <input type="hidden" value="mset" name="a" >
-                                    <div id="dataselect" class="form-group" style="padding: 0 10px;">
-                                        <div id="datepicker" class="input-daterange">
-                                            <label class="font-noraml">商户名称</label>
-                                            <input class="input form-control" type="text" name="name" value="{pg: if (isset($getdata.name))} {pg: $getdata.name}{pg:/if}" placeholder="输入商户名称" style="width: 17%;border-radius: 3px;height: 30px; margin-bottom: 0px;">
-                                            <label class="font-noraml">选择日期</label>&nbsp;&nbsp;&nbsp;
-                                            <input type="text" value="{pg: if (isset($getdata.start))} {pg: $getdata.start}{pg:/if}" name="start" class="input-sm form-control" id="datestart" placeholder="开始时间" style=" margin-bottom: 0px; width:17%; height: 30px;border-radius:3px">
-                                            &nbsp;<span> 到 </span>&nbsp;
-                                            <input type="text" value="{pg: if (isset($getdata.end))}{pg:$getdata.end}{pg:/if}" name="end" class="input-sm form-control" id="dateend" placeholder="结束时间" style=" margin-bottom: 0px; width: 17%;height: 30px;border-radius:3px">
-                                            &nbsp;&nbsp;&nbsp;<input class="btn btn-primary" type="submit" value="查 询" style="width:70px;">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary"  style="width:100px;" href="?m=System&c=settlement&a=data2Excel&type=mch" >导出excel</a><br>
-                                            <!--  <a class="btn btn-primary"  style="width:100px; float: right ;margin-right: 144px; margin-top: 10px" id="jiesuan">结算</a>
-                                            <a class="btn btn-primary"  style="width:100px; float: right; margin-right: 10px; margin-top: 10px;" href="/merchants.php?m=Index&c=auto&a=index" target="_blank">一键代付</a>-->
-<!--                                            <a class="btn btn-primary"  style="width:110px;" href="/merchants.php?m=Index&c=auto&a=day" target="_blank">获取最新账单</a>-->
-                                        </div>
-                                    </div>
-                                 </form>
+                               
                                     <div class="employersDelAll" >
                                         <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" data-filter=#filter>
                                             <thead>
@@ -243,7 +224,7 @@
                                             描述：已划账
                                 -->
                                 <div class="ibox-content " style="border-top:none">
-                                   <form action="/merchants.php?m=System&c=settlement&a=mdebit" method="get">
+                                   <form action="/merchants.php?m=System&c=settlement&a=cashapply&action=success" method="get">
                                     <input type="hidden" value="System" name="m" >
                                     <input type="hidden" value="settlement" name="c" >
                                     <input type="hidden" value="mdebit" name="a" >
@@ -264,6 +245,7 @@
                                         <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" data-filter=#filter style="margin-bottom: 0px;">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;"  data-hide="phone">商户名称</th>
                                                     <th style="text-align: center;"  data-hide="phone">银行卡号</th>
                                                     <th style="text-align: center;"  data-hide="phone">开户姓名</th>
                                                     <th style="text-align: center;"  data-hide="phone">开户银行</th>
@@ -275,6 +257,7 @@
                                             <tbody class="js-list-body-region" id="table-list-body">
                                                 {pg:foreach item=vv from=$rows}
                                                 <tr class="widget-list-item bd_nr" style="text-align: center;">
+                                                    <td>{pg:$vv.mname}</td>
                                                     <td>{pg:$vv.bank}</td>
                                                     <td>{pg:$vv.name}</td>
                                                     <td>
@@ -298,7 +281,7 @@
 
                                             </tbody>
                                         </table>
-                                        <p style="text-align: right; padding-right: 150px; height: 50px; background: #f2f2f2; line-height: 50px;">合计金额:<?php echo $sum_money;?>元</p>
+                                        <!--<p style="text-align: right; padding-right: 150px; height: 50px; background: #f2f2f2; line-height: 50px;">合计金额:<?php echo $sum_money;?>元</p>-->
                                     </div>
                                     {pg:$page}
                                 </div>
